@@ -1,24 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Navbar from "./Components/Navbar/Navbar";
+import { StoreProvider } from "./Store/data";
+import "antd/dist/antd.css";
+import Menu from "./Components/Menu/Menu";
+import { Divider } from "../node_modules/antd/lib/index";
+import HomePage from "./Components/HomePage/HomePage";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StoreProvider>
+      <div className="App">
+        <Navbar />
+        <Divider style={{ margin: "0" }} />
+        <Menu />
+        <Divider style={{ margin: "0" }} />
+        <HomePage />
+      </div>
+    </StoreProvider>
   );
 }
 

@@ -1,0 +1,8 @@
+.search__div {
+  width: 50vw;
+}
+@media screen and (max-width: 720px) {
+  .search__div {
+    width: 30vw;
+  }
+}
