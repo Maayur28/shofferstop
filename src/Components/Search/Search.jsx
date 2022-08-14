@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { AutoComplete, Input } from "../../../node_modules/antd/lib/index";
+import { AutoComplete, Input } from "antd";
 import { StoreContext } from "./../../Store/data";
 const Search = () => {
   const { window } = useContext(StoreContext);
