@@ -22,7 +22,6 @@ const Search = () => {
     } else {
       setWidth(20);
     }
-    console.log(window.innerWidth, width);
   }, [window]);
 
   const onSelect = (value) => {

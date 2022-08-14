@@ -1,0 +1,16 @@
+.login__button_register {
+  display: flex;
+  flex-direction: column;
+}
+.login__modal {
+  width: 400px !important;
+}
+.login__register_button {
+  cursor: pointer;
+  color: #1890ff;
+}
+@media screen and (max-width: 420px) {
+  .login__modal {
+    width: 300px !important;
+  }
+}

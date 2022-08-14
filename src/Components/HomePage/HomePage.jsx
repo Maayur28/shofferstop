@@ -36,13 +36,13 @@ const HomePage = () => {
             </Card>
           </Col>
           <Col span={8}>
-            <Card title="Top Pics" bordered={false}>
-              Top Pics
+            <Card title="At ₹99" bordered={false}>
+              At ₹99
             </Card>
           </Col>
           <Col span={8}>
-            <Card title="Best Seller" bordered={false}>
-              Best Seller
+            <Card title="Category under offer" bordered={false}>
+              Category under offer
             </Card>
           </Col>
         </Row>
