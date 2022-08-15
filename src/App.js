@@ -5,6 +5,8 @@ import "antd/dist/antd.css";
 import Menu from "./Components/Menu/Menu";
 import { Divider } from "../node_modules/antd/lib/index";
 import HomePage from "./Components/HomePage/HomePage";
+import { Route, Routes } from "react-router-dom";
+import Account from "./Components/Account/Account";
 
 function App() {
   return (
@@ -14,7 +16,10 @@ function App() {
         <Divider style={{ margin: "0" }} />
         <Menu />
         <Divider style={{ margin: "0" }} />
-        <HomePage />
+        <Routes>
+          <Route path="/" element={<HomePage />}></Route>
+          <Route path="/account" element={<Account />}></Route>
+        </Routes>
       </div>
     </StoreProvider>
   );

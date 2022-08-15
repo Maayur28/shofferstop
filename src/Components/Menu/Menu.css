@@ -1,8 +1,10 @@
 .react-multi-carousel-track {
   padding: 10px 0px;
+  align-items: center;
 }
 .carousel-container {
   padding: 10px 0px;
+  height: 60px;
 }
 .react-multiple-carousel__arrow--left {
   left: 0px;

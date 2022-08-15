@@ -1,4 +1,4 @@
-async function fetchPost(url = "", values = {}) {
+export async function fetchPost(url = "", values = {}) {
   const options = {
     method: "POST",
     body: JSON.stringify(values),
@@ -17,4 +17,22 @@ async function fetchPost(url = "", values = {}) {
     throw err;
   }
 }
-export default fetchPost;
+
+export async function fetchGet(url = "", accessToken = "") {
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+  const response = await fetch(url, options);
+  if (response.status >= 200 && response.status <= 299) {
+    return await response.json();
+  } else {
+    let error = await response.json();
+    let err = new Error();
+    err.status = error.status;
+    err.message = error.error;
+    throw err;
+  }
+}

@@ -1,7 +1,18 @@
 import React, { useState, createContext, useEffect } from "react";
+import Cookies from "universal-cookie";
+import deleteAllCookies from "../Components/Util";
+
 export const StoreContext = createContext({});
 export const StoreProvider = (props) => {
-  const [isLogin, setisLogin] = useState(false);
+  const cookies = new Cookies();
+  const [isLogin, setisLogin] = useState(
+    cookies.get("firstName") != null &&
+      cookies.get("accessToken") != null &&
+      cookies.get("refreshToken") != null
+      ? true
+      : false
+  );
+  const [firstName, setfirstName] = useState("");
   const [windowSize, setWindowSize] = useState(getWindowSize());
 
   useEffect(() => {
@@ -14,6 +25,35 @@ export const StoreProvider = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (isLogin) {
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${cookies.get("accessToken")}`,
+        },
+      };
+      fetch("http://localhost:8080/users", options)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data != null) {
+            setfirstName(cookies.get("firstName"));
+            setisLogin(true);
+          } else {
+            deleteAllCookies();
+            setisLogin(false);
+          }
+        })
+        .catch(() => {
+          deleteAllCookies();
+          setisLogin(false);
+        });
+    } else {
+      deleteAllCookies();
+      setisLogin(false);
+    }
+  }, []);
+
   function getWindowSize() {
     const { innerWidth, innerHeight } = window;
     return { innerWidth, innerHeight };
@@ -21,8 +61,11 @@ export const StoreProvider = (props) => {
   return (
     <StoreContext.Provider
       value={{
-        login: [isLogin, setisLogin],
+        isLogin: isLogin,
+        setisLogin: setisLogin,
         window: windowSize,
+        firstName: firstName,
+        setfirstName: setfirstName,
       }}
     >
       {props.children}

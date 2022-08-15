@@ -1,33 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Modal, Button, Checkbox, Form, Input, message } from "antd";
 import { LockOutlined, UserOutlined, MailOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./Login.css";
-import fetchPost from "./../FetchData";
+import { fetchPost } from "./../FetchData";
 import Cookies from "universal-cookie";
+import { StoreContext } from "../../Store/data";
+import deleteAllCookies from "../Util";
 
-const Login = (props) => {
+const Login = ({ loginModalVisible, setloginModalVisible, setfirstName }) => {
   const cookies = new Cookies();
-  const [isLogin, setisLogin] = useState(true);
+  const { setisLogin } = useContext(StoreContext);
+  const [createAccount, setcreateAccount] = useState(false);
+  const [apiCalled, setapiCalled] = useState(false);
   const [form] = Form.useForm();
   const onFinish = async (values) => {
     try {
-      delete values.confirmPassword;
-      const response = await fetchPost("http://localhost:8080/users", values);
+      if (values.confirmPassword != null) {
+        delete values.confirmPassword;
+      }
+      setapiCalled(true);
+      const response = await fetchPost(
+        `http://localhost:8080/users/${createAccount ? "register" : "login"}`,
+        values
+      );
       deleteAllCookies();
       for (let key in response) {
         cookies.set(key, response[key], { path: "/" });
+        if (key === "firstName") {
+          setfirstName(response[key]);
+        }
       }
+      form.resetFields();
+      setloginModalVisible(false);
+      setapiCalled(false);
+      setisLogin(true);
     } catch (err) {
+      setapiCalled(false);
       message.error(err.message);
-    }
-  };
-  const deleteAllCookies = () => {
-    const cookiesArray = cookies.getAll();
-    if (cookiesArray != null) {
-      for (let key in cookiesArray) {
-        cookies.remove(key);
-      }
     }
   };
   const validatePassword = (rule, value, callback) => {
@@ -41,22 +51,23 @@ const Login = (props) => {
     <div className="login">
       <Modal
         className="login__modal"
-        visible={props.loginModalVisible}
-        title={isLogin ? "Welcome Back" : "Create An Account"}
-        onCancel={props.loginModalCall}
+        visible={loginModalVisible}
+        title={!createAccount ? "Welcome Back" : "Create An Account"}
+        onCancel={() => setloginModalVisible(false)}
         footer={null}
       >
         <Form
           name="normal_login"
           form={form}
           className="login-form"
+          disabled={apiCalled}
           initialValues={{
             remember: true,
           }}
           onFinish={onFinish}
           autoComplete="on"
         >
-          {!isLogin ? (
+          {createAccount ? (
             <Form.Item
               name="firstName"
               rules={[
@@ -74,7 +85,7 @@ const Login = (props) => {
             </Form.Item>
           ) : null}
           <Form.Item
-            name="email"
+            name="userName"
             rules={[
               {
                 required: true,
@@ -105,7 +116,7 @@ const Login = (props) => {
               placeholder="Password"
             />
           </Form.Item>
-          {!isLogin ? (
+          {createAccount ? (
             <Form.Item
               name="confirmPassword"
               dependencies={["password"]}
@@ -142,7 +153,7 @@ const Login = (props) => {
             >
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
-            {isLogin ? (
+            {!createAccount ? (
               <Link
                 className="login-form-forgot"
                 to=""
@@ -158,15 +169,16 @@ const Login = (props) => {
               type="primary"
               htmlType="submit"
               className="login-form-button"
+              loading={apiCalled}
               block
             >
-              {isLogin ? "SignIn" : "SignUp"}
+              {!createAccount ? "SignIn" : "SignUp"}
             </Button>
-            {!isLogin ? (
+            {createAccount ? (
               <div style={{ float: "left", marginTop: "10px" }}>
                 Already have an account?&nbsp;&nbsp;
                 <span
-                  onClick={() => setisLogin(true)}
+                  onClick={() => setcreateAccount(false)}
                   className="login__register_button"
                 >
                   SignIn
@@ -176,7 +188,7 @@ const Login = (props) => {
               <div style={{ float: "left", marginTop: "10px" }}>
                 Or&nbsp;&nbsp;
                 <span
-                  onClick={() => setisLogin(false)}
+                  onClick={() => setcreateAccount(true)}
                   className="login__register_button"
                 >
                   register now!
