@@ -10,10 +10,12 @@ import {
   FileDoneOutlined,
 } from "@ant-design/icons";
 import Cookies from "universal-cookie";
+import ProfileInformation from "./ProfileInformation/ProfileInformation";
 const { Title } = Typography;
 const Account = () => {
   const cookies = new Cookies();
   const firstName = cookies.get("firstName");
+
   function getItem(label, key, icon, children, type) {
     return {
       key,
@@ -33,8 +35,8 @@ const Account = () => {
   ];
   return (
     <div className="account">
-      <div>
-        <Card style={{ width: 200, margin: "20px 0" }}>
+      <div className="account_sidenav">
+        <Card style={{ width: 200 }}>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Avatar
               size="large"
@@ -64,6 +66,9 @@ const Account = () => {
         <div style={{ width: 200 }}>
           <Menu defaultSelectedKeys={["1"]} mode="inline" items={items} />
         </div>
+      </div>
+      <div className="account_content">
+        <ProfileInformation />
       </div>
     </div>
   );
