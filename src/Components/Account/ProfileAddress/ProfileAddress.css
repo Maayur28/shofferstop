@@ -9,3 +9,12 @@
 .profile_show_address {
   margin: 20px 0px;
 }
+.ant-form-item-label {
+  padding-bottom: 0px !important;
+}
+.address_input {
+  margin-bottom: 0px !important;
+}
+.profile-address-form-add_address-button {
+  margin: 20px 0px 10px 0px;
+}

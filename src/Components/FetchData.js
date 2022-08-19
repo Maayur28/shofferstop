@@ -1,9 +1,10 @@
-export async function fetchPost(url = "", values = {}) {
+export async function fetchPost(url = "", values = {}, accessToken = "") {
   const options = {
     method: "POST",
     body: JSON.stringify(values),
     headers: {
-      "Content-type": "application/json; charset=UTF-8",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
   };
   const response = await fetch(url, options);
