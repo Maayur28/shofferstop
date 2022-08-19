@@ -24,6 +24,7 @@ export async function fetchGet(url = "", accessToken = "") {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
+    mode: "no-cors",
   };
   const response = await fetch(url, options);
   if (response.status >= 200 && response.status <= 299) {

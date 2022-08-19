@@ -3,10 +3,11 @@ import { Form, Input, Button, Row, Col, DatePicker, Select } from "antd";
 import { MailOutlined, UserOutlined } from "@ant-design/icons";
 import "./ProfileInformation.css";
 
-const ProfileInformation = () => {
+const ProfileInformation = ({ accountData }) => {
   const { Option } = Select;
   const [form] = Form.useForm();
   const [apiCalled, setapiCalled] = useState(false);
+  console.log(accountData);
   const onFinish = (values) => {
     console.log(values);
   };
@@ -17,9 +18,7 @@ const ProfileInformation = () => {
         form={form}
         className="account-form"
         disabled={apiCalled}
-        initialValues={{
-          remember: true,
-        }}
+        initialValues={{ ...accountData }}
         onFinish={onFinish}
         autoComplete="on"
       >

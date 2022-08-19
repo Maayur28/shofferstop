@@ -1,0 +1,11 @@
+.address-form {
+  text-align: left;
+}
+.profile__address {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.profile_show_address {
+  margin: 20px 0px;
+}
