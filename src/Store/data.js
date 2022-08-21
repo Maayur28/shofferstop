@@ -3,8 +3,8 @@ import Cookies from "universal-cookie";
 import deleteAllCookies from "../Components/Util";
 
 export const StoreContext = createContext({});
+const cookies = new Cookies();
 export const StoreProvider = (props) => {
-  const cookies = new Cookies();
   const [isLogin, setisLogin] = useState(
     cookies.get("firstName") != null &&
       cookies.get("accessToken") != null &&
@@ -33,7 +33,7 @@ export const StoreProvider = (props) => {
           Authorization: `Bearer ${cookies.get("accessToken")}`,
         },
       };
-      fetch("https://shofferstop-userservice.herokuapp.com/users", options)
+      fetch("http://localhost:8090/users", options)
         .then((response) => response.json())
         .then((data) => {
           if (data != null) {
@@ -52,7 +52,7 @@ export const StoreProvider = (props) => {
       deleteAllCookies();
       setisLogin(false);
     }
-  }, []);
+  }, [isLogin]);
 
   function getWindowSize() {
     const { innerWidth, innerHeight } = window;

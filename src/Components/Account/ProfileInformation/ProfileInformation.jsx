@@ -24,9 +24,10 @@ const ProfileInformation = ({ accountData, setaccountData }) => {
   const [MM, setMM] = useState();
   const [YYYY, setYYYY] = useState();
   const [profileEditMode, setprofileEditMode] = useState(false);
-
   const [apiCalled, setapiCalled] = useState(false);
+
   const onFinish = async (values) => {
+    setapiCalled(true);
     if (
       DD == null ||
       DD === undefined ||
@@ -45,7 +46,7 @@ const ProfileInformation = ({ accountData, setaccountData }) => {
     dob += YYYY;
     values.userDob = dob;
     const response = await fetchPut(
-      `https://shofferstop-userservice.herokuapp.com/users`,
+      `http://localhost:8090/users`,
       values,
       cookies.get("accessToken")
     );
@@ -53,13 +54,16 @@ const ProfileInformation = ({ accountData, setaccountData }) => {
     setfirstName(response.firstName);
     cookies.set("firstName", response.firstName);
     setprofileEditMode(false);
+    setapiCalled(false);
   };
 
   useEffect(() => {
-    let dob = accountData.userDob.split("-");
-    setDD(dob[0]);
-    setMM(dob[1]);
-    setYYYY(dob[2]);
+    if (accountData != null && accountData.userDob != null) {
+      let dob = accountData.userDob.split("-");
+      setDD(dob[0]);
+      setMM(dob[1]);
+      setYYYY(dob[2]);
+    }
   }, [accountData]);
 
   return (

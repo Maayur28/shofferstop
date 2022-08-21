@@ -7,6 +7,7 @@ import { Divider } from "../node_modules/antd/lib/index";
 import HomePage from "./Components/HomePage/HomePage";
 import { Route, Routes } from "react-router-dom";
 import Account from "./Components/Account/Account";
+import NotFound from "./Components/NotFound";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/account" element={<Account />}></Route>
+          <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </div>
     </StoreProvider>

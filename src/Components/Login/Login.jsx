@@ -21,9 +21,7 @@ const Login = ({ loginModalVisible, setloginModalVisible, setfirstName }) => {
       }
       setapiCalled(true);
       const response = await fetchPost(
-        `https://shofferstop-userservice.herokuapp.com/users/${
-          createAccount ? "register" : "login"
-        }`,
+        `http://localhost:8090/users/${createAccount ? "register" : "login"}`,
         values
       );
       deleteAllCookies();
@@ -55,7 +53,9 @@ const Login = ({ loginModalVisible, setloginModalVisible, setfirstName }) => {
         className="login__modal"
         visible={loginModalVisible}
         title={!createAccount ? "Welcome Back" : "Create An Account"}
-        onCancel={() => setloginModalVisible(false)}
+        onCancel={() => {
+          if (!apiCalled) setloginModalVisible(false);
+        }}
         footer={null}
       >
         <Form
@@ -160,6 +160,7 @@ const Login = ({ loginModalVisible, setloginModalVisible, setfirstName }) => {
                 className="login-form-forgot"
                 to=""
                 style={{ marginTop: "5px", float: "right" }}
+                disabled={apiCalled}
               >
                 Forgot password
               </Link>
@@ -176,26 +177,30 @@ const Login = ({ loginModalVisible, setloginModalVisible, setfirstName }) => {
             >
               {!createAccount ? "SignIn" : "SignUp"}
             </Button>
-            {createAccount ? (
-              <div style={{ float: "left", marginTop: "10px" }}>
-                Already have an account?&nbsp;&nbsp;
-                <span
-                  onClick={() => setcreateAccount(false)}
-                  className="login__register_button"
-                >
-                  SignIn
-                </span>
-              </div>
-            ) : (
-              <div style={{ float: "left", marginTop: "10px" }}>
-                Or&nbsp;&nbsp;
-                <span
-                  onClick={() => setcreateAccount(true)}
-                  className="login__register_button"
-                >
-                  register now!
-                </span>
-              </div>
+            {!apiCalled && (
+              <>
+                {createAccount ? (
+                  <div style={{ float: "left", marginTop: "10px" }}>
+                    Already have an account?&nbsp;&nbsp;
+                    <span
+                      onClick={() => setcreateAccount(false)}
+                      className="login__register_button"
+                    >
+                      SignIn
+                    </span>
+                  </div>
+                ) : (
+                  <div style={{ float: "left", marginTop: "10px" }}>
+                    Or&nbsp;&nbsp;
+                    <span
+                      onClick={() => setcreateAccount(true)}
+                      className="login__register_button"
+                    >
+                      register now!
+                    </span>
+                  </div>
+                )}
+              </>
             )}
           </Form.Item>
         </Form>

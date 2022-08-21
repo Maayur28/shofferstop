@@ -1,7 +1,8 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Menu, Card, Typography } from "antd";
+import { Menu, Card, Typography, message, Result } from "antd";
 import "./Account.css";
 import deleteAllCookies from "../Util";
+import { Link } from "react-router-dom";
 import {
   BookOutlined,
   UserOutlined,
@@ -13,6 +14,7 @@ import { StoreContext } from "../../Store/data";
 import Cookies from "universal-cookie";
 import ProfileInformation from "./ProfileInformation/ProfileInformation";
 import ProfileAddress from "./ProfileAddress/ProfileAddress";
+import { fetchGet } from "./../FetchData";
 const { Title } = Typography;
 const Account = () => {
   const { isLogin, setisLogin } = useContext(StoreContext);
@@ -27,37 +29,26 @@ const Account = () => {
 
   useEffect(() => {
     if (isLogin) {
-      setapifetch(true);
-      const options = {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${cookies.get("accessToken")}`,
-        },
-      };
-      fetch(
-        "https://shofferstop-userservice.herokuapp.com/users/account",
-        options
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          if (data != null) {
-            console.log(data);
-            setaccountData({ ...data });
-          } else {
-            deleteAllCookies();
-            setisLogin(false);
-          }
-        })
-        .catch(() => {
-          deleteAllCookies();
-          setisLogin(false);
-        });
+      getAccount();
     } else {
       deleteAllCookies();
       setisLogin(false);
     }
+  }, [isLogin]);
+
+  const getAccount = async () => {
+    setapifetch(true);
+    try {
+      const response = await fetchGet(
+        "http://localhost:8090/users/account",
+        cookies.get("accessToken")
+      );
+      setaccountData({ ...response });
+    } catch (err) {
+      message.error(err.message);
+    }
     setapifetch(false);
-  }, []);
+  };
 
   function getItem(label, key, icon, children, type) {
     return {
@@ -118,17 +109,30 @@ const Account = () => {
         </div>
       </div>
       <div className="account_content">
-        {!apifetch && Object.keys(accountData).length !== 0 ? (
+        {isLogin ? (
           <>
-            {selectedKey === "1" ? (
-              <ProfileInformation
-                accountData={accountData}
-                setaccountData={setaccountData}
-              />
+            {!apifetch && Object.keys(accountData).length !== 0 ? (
+              <>
+                {selectedKey === "1" ? (
+                  <ProfileInformation
+                    accountData={accountData}
+                    setaccountData={setaccountData}
+                  />
+                ) : null}
+                {selectedKey === "2" ? (
+                  <ProfileAddress isLogin={isLogin} setisLogin={setisLogin} />
+                ) : null}
+              </>
             ) : null}
-            {selectedKey === "2" ? <ProfileAddress isLogin={isLogin} /> : null}
           </>
-        ) : null}
+        ) : (
+          <Result
+            status="403"
+            title="Please login to continue!!!"
+            subTitle="Sorry, you are not authorized to access this page."
+            extra={<Link to="/">Back Home</Link>}
+          />
+        )}
       </div>
     </div>
   );

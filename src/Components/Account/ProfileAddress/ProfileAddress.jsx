@@ -4,12 +4,11 @@ import {
   Input,
   Button,
   Select,
-  Card,
   InputNumber,
   Checkbox,
-  Typography,
   Pagination,
   Badge,
+  Spin,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { cities } from "../Cities";
@@ -25,8 +24,9 @@ import {
 } from "../../FetchData";
 import Cookies from "universal-cookie";
 import AddressCard from "./AddressCard";
+import deleteAllCookies from "../../Util";
 
-const ProfileAddress = ({ isLogin }) => {
+const ProfileAddress = ({ isLogin, setisLogin }) => {
   const cookies = new Cookies();
   const { Option } = Select;
   const [form] = Form.useForm();
@@ -41,12 +41,22 @@ const ProfileAddress = ({ isLogin }) => {
   const [addressId, setAddressId] = useState();
 
   useEffect(() => {
-    getAddress(pagination.page, pagination.pageSize);
+    if (isLogin) {
+      getAddress(pagination.page, pagination.pageSize);
+    } else {
+      deleteAllCookies();
+      setisLogin(false);
+    }
   }, [isLogin]);
 
+  const onPageChange = (page, pageSize) => {
+    getAddress(page, pageSize);
+  };
+
   const getAddress = async (page, pageSize) => {
+    setapiCalled(true);
     const response = await fetchGet(
-      "https://shofferstop-userservice.herokuapp.com/users/address?" +
+      "http://localhost:8090/users/address?" +
         new URLSearchParams({
           page: page,
           pageSize: pageSize,
@@ -56,11 +66,13 @@ const ProfileAddress = ({ isLogin }) => {
     setpagination(response.pagination);
     setTotal(response.total);
     setAddress(response.addresses);
+    setapiCalled(false);
   };
 
   const setAsDefault = async (addressId) => {
+    setapiCalled(true);
     const response = await updatefetchPut(
-      `https://shofferstop-userservice.herokuapp.com/users/address/default/${addressId}?` +
+      `http://localhost:8090/users/address/default/${addressId}?` +
         new URLSearchParams({
           page: pagination.page,
           pageSize: pagination.pageSize,
@@ -70,12 +82,13 @@ const ProfileAddress = ({ isLogin }) => {
     setpagination(response.pagination);
     setTotal(response.total);
     setAddress(response.addresses);
+    setapiCalled(false);
   };
 
   const deleteAddress = async (addressId) => {
-    console.log(addressId);
+    setapiCalled(true);
     const response = await fetchDelete(
-      `https://shofferstop-userservice.herokuapp.com/users/address/${addressId}?` +
+      `http://localhost:8090/users/address/${addressId}?` +
         new URLSearchParams({
           page: pagination.page,
           pageSize: pagination.pageSize,
@@ -85,14 +98,16 @@ const ProfileAddress = ({ isLogin }) => {
     setpagination(response.pagination);
     setTotal(response.total);
     setAddress(response.addresses);
+    setapiCalled(false);
   };
 
   const onFinish = async (values) => {
     let response;
+    setapiCalled(true);
     if (addressEditMode) {
       values.defaultAddress = values.defaultAddress === true ? 1 : 0;
       response = await fetchPut(
-        `https://shofferstop-userservice.herokuapp.com/users/address/${addressId}?` +
+        `http://localhost:8090/users/address/${addressId}?` +
           new URLSearchParams({
             page: pagination.page,
             pageSize: pagination.pageSize,
@@ -102,7 +117,7 @@ const ProfileAddress = ({ isLogin }) => {
       );
     } else {
       response = await fetchPost(
-        "https://shofferstop-userservice.herokuapp.com/users/address?" +
+        "http://localhost:8090/users/address?" +
           new URLSearchParams({
             page: pagination.page,
             pageSize: pagination.pageSize,
@@ -118,10 +133,7 @@ const ProfileAddress = ({ isLogin }) => {
     setaddressEditMode(false);
     form.resetFields();
     setAddressId("");
-  };
-
-  const onPageChange = (page, pageSize) => {
-    getAddress(page, pageSize);
+    setapiCalled(false);
   };
 
   const countryChanged = (value) => {
@@ -157,7 +169,7 @@ const ProfileAddress = ({ isLogin }) => {
   };
   return (
     <div className="profile__address">
-      {!addressAddMode && !addressEditMode && (
+      {!addressAddMode && !addressEditMode && !apiCalled && (
         <div className="profile_add_address ">
           <Button
             className="address_card"
@@ -178,6 +190,7 @@ const ProfileAddress = ({ isLogin }) => {
       {!addressAddMode &&
         !addressEditMode &&
         address != null &&
+        !apiCalled &&
         address.map((val, index) =>
           val.defaultAddress === 1 ? (
             <Badge.Ribbon
@@ -208,6 +221,7 @@ const ProfileAddress = ({ isLogin }) => {
         pagination !== null &&
         pagination.pageSize !== null &&
         pagination.page !== null &&
+        !apiCalled &&
         total !== 0 && (
           <Pagination
             size="small"
@@ -343,7 +357,7 @@ const ProfileAddress = ({ isLogin }) => {
               >
                 {state.length !== 0 &&
                   state.map((val, index) => (
-                    <Option key={val.id} value={val.state_name}>
+                    <Option key={val.id + index} value={val.state_name}>
                       {val.state_name}
                     </Option>
                   ))}
@@ -403,6 +417,7 @@ const ProfileAddress = ({ isLogin }) => {
           </Form>
         </>
       )}
+      {apiCalled && <Spin tip="Loading..." />}
     </div>
   );
 };
