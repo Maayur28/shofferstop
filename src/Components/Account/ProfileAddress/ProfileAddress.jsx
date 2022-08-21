@@ -56,7 +56,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
   const getAddress = async (page, pageSize) => {
     setapiCalled(true);
     const response = await fetchGet(
-      "http://localhost:8090/users/address?" +
+      "https://shofferstop-userservice.herokuapp.com/users/address?" +
         new URLSearchParams({
           page: page,
           pageSize: pageSize,
@@ -72,7 +72,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
   const setAsDefault = async (addressId) => {
     setapiCalled(true);
     const response = await updatefetchPut(
-      `http://localhost:8090/users/address/default/${addressId}?` +
+      `https://shofferstop-userservice.herokuapp.com/users/address/default/${addressId}?` +
         new URLSearchParams({
           page: pagination.page,
           pageSize: pagination.pageSize,
@@ -88,7 +88,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
   const deleteAddress = async (addressId) => {
     setapiCalled(true);
     const response = await fetchDelete(
-      `http://localhost:8090/users/address/${addressId}?` +
+      `https://shofferstop-userservice.herokuapp.com/users/address/${addressId}?` +
         new URLSearchParams({
           page: pagination.page,
           pageSize: pagination.pageSize,
@@ -107,7 +107,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
     if (addressEditMode) {
       values.defaultAddress = values.defaultAddress === true ? 1 : 0;
       response = await fetchPut(
-        `http://localhost:8090/users/address/${addressId}?` +
+        `https://shofferstop-userservice.herokuapp.com/users/address/${addressId}?` +
           new URLSearchParams({
             page: pagination.page,
             pageSize: pagination.pageSize,
@@ -117,7 +117,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
       );
     } else {
       response = await fetchPost(
-        "http://localhost:8090/users/address?" +
+        "https://shofferstop-userservice.herokuapp.com/users/address?" +
           new URLSearchParams({
             page: pagination.page,
             pageSize: pagination.pageSize,
