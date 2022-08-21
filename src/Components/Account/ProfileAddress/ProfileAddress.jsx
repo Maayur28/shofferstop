@@ -1,29 +1,127 @@
-import React, { useState } from "react";
-import { Form, Input, Button, Select, Card, InputNumber, Checkbox } from "antd";
+import React, { useState, useEffect } from "react";
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  Card,
+  InputNumber,
+  Checkbox,
+  Typography,
+  Pagination,
+  Badge,
+} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { cities } from "../Cities";
 import { countries } from "../Countries";
 import { states } from "./../States";
 import "./ProfileAddress.css";
-import { fetchPost } from "../../FetchData";
+import {
+  fetchGet,
+  fetchPost,
+  fetchPut,
+  fetchDelete,
+  updatefetchPut,
+} from "../../FetchData";
 import Cookies from "universal-cookie";
-const ProfileAddress = ({ addresses }) => {
+import AddressCard from "./AddressCard";
+
+const ProfileAddress = ({ isLogin }) => {
   const cookies = new Cookies();
   const { Option } = Select;
   const [form] = Form.useForm();
   const [apiCalled, setapiCalled] = useState(false);
   const [addressAddMode, setaddressAddMode] = useState(false);
   const [addressEditMode, setaddressEditMode] = useState(false);
+  const [pagination, setpagination] = useState({ page: 1, pageSize: 2 });
+  const [total, setTotal] = useState(10);
   const [state, setstate] = useState([]);
   const [city, setcity] = useState([]);
-  const onFinish = async (values) => {
-    console.log(values);
-    const response = await fetchPost(
-      "http://localhost:8090/users/address",
-      values,
+  const [address, setAddress] = useState([]);
+  const [addressId, setAddressId] = useState();
+
+  useEffect(() => {
+    getAddress(pagination.page, pagination.pageSize);
+  }, [isLogin]);
+
+  const getAddress = async (page, pageSize) => {
+    const response = await fetchGet(
+      "https://shofferstop-userservice.herokuapp.com/users/address?" +
+        new URLSearchParams({
+          page: page,
+          pageSize: pageSize,
+        }),
       cookies.get("accessToken")
     );
-    console.log(response);
+    setpagination(response.pagination);
+    setTotal(response.total);
+    setAddress(response.addresses);
+  };
+
+  const setAsDefault = async (addressId) => {
+    const response = await updatefetchPut(
+      `https://shofferstop-userservice.herokuapp.com/users/address/default/${addressId}?` +
+        new URLSearchParams({
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+        }),
+      cookies.get("accessToken")
+    );
+    setpagination(response.pagination);
+    setTotal(response.total);
+    setAddress(response.addresses);
+  };
+
+  const deleteAddress = async (addressId) => {
+    console.log(addressId);
+    const response = await fetchDelete(
+      `https://shofferstop-userservice.herokuapp.com/users/address/${addressId}?` +
+        new URLSearchParams({
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+        }),
+      cookies.get("accessToken")
+    );
+    setpagination(response.pagination);
+    setTotal(response.total);
+    setAddress(response.addresses);
+  };
+
+  const onFinish = async (values) => {
+    let response;
+    if (addressEditMode) {
+      values.defaultAddress = values.defaultAddress === true ? 1 : 0;
+      response = await fetchPut(
+        `https://shofferstop-userservice.herokuapp.com/users/address/${addressId}?` +
+          new URLSearchParams({
+            page: pagination.page,
+            pageSize: pagination.pageSize,
+          }),
+        values,
+        cookies.get("accessToken")
+      );
+    } else {
+      response = await fetchPost(
+        "https://shofferstop-userservice.herokuapp.com/users/address?" +
+          new URLSearchParams({
+            page: pagination.page,
+            pageSize: pagination.pageSize,
+          }),
+        values,
+        cookies.get("accessToken")
+      );
+    }
+    setpagination(response.pagination);
+    setTotal(response.total);
+    setAddress(response.addresses);
+    setaddressAddMode(false);
+    setaddressEditMode(false);
+    form.resetFields();
+    setAddressId("");
+  };
+
+  const onPageChange = (page, pageSize) => {
+    getAddress(page, pageSize);
   };
 
   const countryChanged = (value) => {
@@ -44,29 +142,85 @@ const ProfileAddress = ({ addresses }) => {
       }
     }
   };
+  const setEditDataCalled = (val) => {
+    form.setFieldsValue({ ...val });
+    setaddressEditMode(true);
+    setaddressAddMode(false);
+    setAddressId(val.addressId);
+  };
+
+  const addressCancelCalled = () => {
+    setaddressAddMode(false);
+    setaddressEditMode(false);
+    form.resetFields();
+    setAddressId("");
+  };
   return (
     <div className="profile__address">
-      {!addressAddMode && (
+      {!addressAddMode && !addressEditMode && (
         <div className="profile_add_address ">
           <Button
             className="address_card"
             type="dashed"
             block
             icon={<PlusOutlined />}
-            onClick={() => setaddressAddMode(true)}
+            onClick={() => {
+              setaddressAddMode(true);
+              setaddressEditMode(false);
+              form.resetFields();
+              setAddressId("");
+            }}
           >
             Add Address
           </Button>
         </div>
       )}
       {!addressAddMode &&
-        addresses != null &&
-        addresses.map((val, key) => (
-          <Card className="profile_show_address" key={key}>
-            {val}
-          </Card>
-        ))}
-      {addressAddMode && (
+        !addressEditMode &&
+        address != null &&
+        address.map((val, index) =>
+          val.defaultAddress === 1 ? (
+            <Badge.Ribbon
+              text="default"
+              className="profile_show_address"
+              key={index + "default"}
+            >
+              <AddressCard
+                val={val}
+                setAsDefault={setAsDefault}
+                setaddressEditMode={() => setEditDataCalled(val)}
+                deleteAddressCalled={() => deleteAddress(val.addressId)}
+              />
+            </Badge.Ribbon>
+          ) : (
+            <AddressCard
+              val={val}
+              setAsDefault={setAsDefault}
+              setaddressEditMode={() => setEditDataCalled(val)}
+              deleteAddressCalled={() => deleteAddress(val.addressId)}
+            />
+          )
+        )}
+      {!addressAddMode &&
+        !addressEditMode &&
+        address != null &&
+        address.length !== 0 &&
+        pagination !== null &&
+        pagination.pageSize !== null &&
+        pagination.page !== null &&
+        total !== 0 && (
+          <Pagination
+            size="small"
+            showQuickJumper
+            pageSize={pagination.pageSize}
+            current={pagination.page}
+            total={total}
+            pageSizeOptions={[2, 5, 10]}
+            showSizeChanger={total > 10}
+            onChange={onPageChange}
+          />
+        )}
+      {(addressAddMode || addressEditMode) && (
         <>
           <Form
             name="profile_address"
@@ -74,9 +228,6 @@ const ProfileAddress = ({ addresses }) => {
             style={{ textAlign: "left" }}
             className="profile_edit_address_form"
             disabled={apiCalled}
-            initialValues={{
-              remember: true,
-            }}
             onFinish={onFinish}
             autoComplete="on"
           >
@@ -118,6 +269,27 @@ const ProfileAddress = ({ addresses }) => {
               <Input type="text" placeholder=" Mayur Agarwal" />
             </Form.Item>
             <Form.Item
+              name="mobile"
+              label="Mobile Number"
+              labelCol={{ span: 24 }}
+              className="address_input"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your mobile number",
+                },
+              ]}
+            >
+              <InputNumber
+                min={1000000000}
+                max={999999999999999}
+                maxLength={15}
+                type="text"
+                style={{ width: "100%" }}
+                placeholder=" 998877665544"
+              />
+            </Form.Item>
+            <Form.Item
               name="pincode"
               label="Pincode"
               labelCol={{ span: 24 }}
@@ -150,7 +322,7 @@ const ProfileAddress = ({ addresses }) => {
                 },
               ]}
             >
-              <Input type="text" placeholder="flatAddress" />
+              <Input type="text" placeholder="flatAddress" maxLength={512} />
             </Form.Item>
             <Form.Item
               name="state"
@@ -216,13 +388,13 @@ const ProfileAddress = ({ addresses }) => {
                 loading={apiCalled}
                 block
               >
-                Add Address
+                {addressEditMode ? "Save Address" : "Add Address"}
               </Button>
               <Button
                 htmlType="button"
                 className="profile-address-form-cancel-button"
                 loading={apiCalled}
-                onClick={() => setaddressAddMode(false)}
+                onClick={addressCancelCalled}
                 block
               >
                 Cancel

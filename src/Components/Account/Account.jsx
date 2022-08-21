@@ -1,9 +1,8 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Menu, Card, Avatar, Typography } from "antd";
+import { Menu, Card, Typography } from "antd";
 import "./Account.css";
 import deleteAllCookies from "../Util";
 import {
-  DollarOutlined,
   BookOutlined,
   UserOutlined,
   HeartOutlined,
@@ -23,6 +22,10 @@ const Account = () => {
   const cookies = new Cookies();
 
   useEffect(() => {
+    localStorage.setItem("accountMenuSelected", selectedKey);
+  }, [selectedKey]);
+
+  useEffect(() => {
     if (isLogin) {
       setapifetch(true);
       const options = {
@@ -31,7 +34,10 @@ const Account = () => {
           Authorization: `Bearer ${cookies.get("accessToken")}`,
         },
       };
-      fetch("http://localhost:8090/users/account", options)
+      fetch(
+        "https://shofferstop-userservice.herokuapp.com/users/account",
+        options
+      )
         .then((response) => response.json())
         .then((data) => {
           if (data != null) {
@@ -65,10 +71,9 @@ const Account = () => {
   const items = [
     getItem("Profile Information", "1", <UserOutlined />),
     getItem("Manage Address", "2", <BookOutlined />),
-    getItem("Payment Options", "3", <DollarOutlined />),
-    getItem("My Wishlist", "4", <HeartOutlined />),
-    getItem("My Orders", "5", <FileDoneOutlined />),
-    getItem("Logout", "6", <LogoutOutlined />),
+    getItem("My Wishlist", "3", <HeartOutlined />),
+    getItem("My Orders", "4", <FileDoneOutlined />),
+    getItem("Logout", "5", <LogoutOutlined />),
   ];
   return (
     <div className="account">
@@ -76,15 +81,6 @@ const Account = () => {
         {!apifetch && Object.keys(accountData).length !== 0 ? (
           <Card style={{ width: 200 }}>
             <div style={{ display: "flex", alignItems: "center" }}>
-              <Avatar
-                size="large"
-                style={{
-                  backgroundColor: "#87d068",
-                  marginRight: "10px",
-                }}
-              >
-                {accountData.firstName.charAt(0).toUpperCase()}
-              </Avatar>
               <div
                 style={{
                   display: "flex",
@@ -92,11 +88,19 @@ const Account = () => {
                   alignItems: "flex-start",
                 }}
               >
-                <Title level={5} style={{ margin: "0px" }}>
+                <Title level={4} style={{ margin: "0px" }}>
                   Hello,
                 </Title>
-                <Title level={3} style={{ margin: "0px" }}>
-                  {accountData.firstName.toUpperCase()}
+                <Title
+                  level={5}
+                  style={{
+                    margin: "0px",
+                    width: "150px",
+                    textAlign: "left",
+                  }}
+                  ellipsis={true}
+                >
+                  {accountData.firstName.toUpperCase()}&nbsp;
                   {accountData.lastName != null &&
                     accountData.lastName.toUpperCase()}
                 </Title>
@@ -117,11 +121,12 @@ const Account = () => {
         {!apifetch && Object.keys(accountData).length !== 0 ? (
           <>
             {selectedKey === "1" ? (
-              <ProfileInformation accountData={accountData} />
+              <ProfileInformation
+                accountData={accountData}
+                setaccountData={setaccountData}
+              />
             ) : null}
-            {selectedKey === "2" ? (
-              <ProfileAddress accountData={accountData.addresses} />
-            ) : null}
+            {selectedKey === "2" ? <ProfileAddress isLogin={isLogin} /> : null}
           </>
         ) : null}
       </div>

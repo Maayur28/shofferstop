@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Dropdown, Menu, Badge, Button, Space, Avatar } from "antd";
+import { Dropdown, Menu, Badge, Button, Space, Avatar, Typography } from "antd";
 import {
   DownOutlined,
   ShoppingCartOutlined,
@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
 import "./Profile.css";
 import Login from "../Login/Login";
 import deleteAllCookies from "../Util";
+
+const { Title } = Typography;
 
 const Profile = ({ isLogin, firstName, setfirstName, setisLogin }) => {
   const [loginModalVisible, setloginModalVisible] = useState(false);
@@ -70,11 +72,22 @@ const Profile = ({ isLogin, firstName, setfirstName, setisLogin }) => {
           <span style={{ cursor: "pointer" }}>
             <Space>
               {isLogin ? (
-                <div>
-                  <Avatar size="small" style={{ backgroundColor: "#87d068" }}>
+                <div style={{ display: "flex" }}>
+                  <Avatar size="small" style={{ backgroundColor: "#40A9FF" }}>
                     {firstName.charAt(0).toUpperCase()}
                   </Avatar>
-                  <span style={{ marginLeft: "5px" }}>{firstName}</span>
+                  <Title
+                    level={5}
+                    style={{
+                      margin: "0px",
+                      textAlign: "left",
+                      width: "min-content",
+                      maxWidth: "60px",
+                    }}
+                    ellipsis={true}
+                  >
+                    {firstName}
+                  </Title>
                 </div>
               ) : (
                 <div>

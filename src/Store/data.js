@@ -12,7 +12,7 @@ export const StoreProvider = (props) => {
       ? true
       : false
   );
-  const [firstName, setfirstName] = useState("");
+  const [firstName, setfirstName] = useState(cookies.get("firstName"));
   const [windowSize, setWindowSize] = useState(getWindowSize());
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export const StoreProvider = (props) => {
           Authorization: `Bearer ${cookies.get("accessToken")}`,
         },
       };
-      fetch("http://localhost:8090/users", options)
+      fetch("https://shofferstop-userservice.herokuapp.com/users", options)
         .then((response) => response.json())
         .then((data) => {
           if (data != null) {

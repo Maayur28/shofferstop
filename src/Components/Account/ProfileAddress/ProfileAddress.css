@@ -18,3 +18,15 @@
 .profile-address-form-add_address-button {
   margin: 20px 0px 10px 0px;
 }
+.address_card_button {
+  width: 49%;
+  color: #40a9ff !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+.address_card_divider {
+  margin: 10px 0px 0px 0px !important;
+}
+.address_card_divider_vertical {
+  margin: 0px !important;
+}
