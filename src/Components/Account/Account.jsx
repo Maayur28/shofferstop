@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Menu, Card, Typography, message, Result } from "antd";
+import { Menu, Card, Typography, message, Result, Spin } from "antd";
 import "./Account.css";
 import deleteAllCookies from "../Util";
 import { Link } from "react-router-dom";
@@ -123,7 +123,9 @@ const Account = () => {
                   <ProfileAddress isLogin={isLogin} setisLogin={setisLogin} />
                 ) : null}
               </>
-            ) : null}
+            ) : (
+              <Spin tip="Loading..." />
+            )}
           </>
         ) : (
           <Result
