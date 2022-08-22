@@ -30,3 +30,11 @@
 .address_card_divider_vertical {
   margin: 0px !important;
 }
+.address_card {
+  width: calc(100vw - 250px);
+  max-width: 550px;
+}
+.address_card_fullName {
+  width: calc(100vw - 280px);
+  max-width: 550px;
+}

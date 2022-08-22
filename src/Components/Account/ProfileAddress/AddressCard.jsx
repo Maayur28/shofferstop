@@ -2,7 +2,12 @@ import React from "react";
 import { Card, Typography, Button, Divider } from "antd";
 
 const { Title, Paragraph, Text } = Typography;
-const AddressCard = ({ val, setAsDefault, setaddressEditMode ,deleteAddressCalled}) => {
+const AddressCard = ({
+  val,
+  setAsDefault,
+  setaddressEditMode,
+  deleteAddressCalled,
+}) => {
   return (
     <Card
       className="profile_show_address"
@@ -17,9 +22,12 @@ const AddressCard = ({ val, setAsDefault, setaddressEditMode ,deleteAddressCalle
                 display: "flex",
                 alignItems: "baseline",
                 justifyContent: "space-between",
+                flexWrap: "wrap",
               }}
             >
-              <Title level={4}>{val.fullName}</Title>
+              <Title level={4} className="address_card_fullName">
+                {val.fullName}
+              </Title>
               {val.defaultAddress === 0 && (
                 <Text
                   type="success"
@@ -62,7 +70,11 @@ const AddressCard = ({ val, setAsDefault, setaddressEditMode ,deleteAddressCalle
                 type="vertical"
                 className="address_card_divider_vertical"
               />
-              <Button type="text" className="address_card_button" onClick={deleteAddressCalled}>
+              <Button
+                type="text"
+                className="address_card_button"
+                onClick={deleteAddressCalled}
+              >
                 Remove
               </Button>
             </div>

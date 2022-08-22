@@ -29,6 +29,7 @@ import deleteAllCookies from "../../Util";
 const ProfileAddress = ({ isLogin, setisLogin }) => {
   const cookies = new Cookies();
   const { Option } = Select;
+  const { Search } = Input;
   const [form] = Form.useForm();
   const [apiCalled, setapiCalled] = useState(false);
   const [addressAddMode, setaddressAddMode] = useState(false);
@@ -167,53 +168,79 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
     form.resetFields();
     setAddressId("");
   };
+
+  const searchCalled = async (val) => {
+    setapiCalled(true);
+    const response = await fetchGet(
+      "https://shofferstop-userservice.herokuapp.com/users/address/search?" +
+        new URLSearchParams({
+          search: val,
+          page: pagination.page,
+          pageSize: pagination.pageSize,
+        }),
+      cookies.get("accessToken")
+    );
+    setpagination(response.pagination);
+    setTotal(response.total);
+    setAddress(response.addresses);
+    setapiCalled(false);
+  };
   return (
     <div className="profile__address">
       {!addressAddMode && !addressEditMode && !apiCalled && (
-        <div className="profile_add_address ">
-          <Button
-            className="address_card"
-            type="dashed"
-            block
-            icon={<PlusOutlined />}
-            onClick={() => {
-              setaddressAddMode(true);
-              setaddressEditMode(false);
-              form.resetFields();
-              setAddressId("");
-            }}
-          >
-            Add Address
-          </Button>
-        </div>
-      )}
-      {!addressAddMode &&
-        !addressEditMode &&
-        address != null &&
-        !apiCalled &&
-        address.map((val, index) =>
-          val.defaultAddress === 1 ? (
-            <Badge.Ribbon
-              text="default"
-              className="profile_show_address"
-              key={index + "default"}
+        <>
+          <div className="profile_add_address ">
+            <Button
+              className="address_card"
+              type="dashed"
+              block
+              icon={<PlusOutlined />}
+              onClick={() => {
+                setaddressAddMode(true);
+                setaddressEditMode(false);
+                form.resetFields();
+                setAddressId("");
+              }}
             >
+              Add Address
+            </Button>
+          </div>
+          <Search
+            style={{ margin: "20px 0px" }}
+            placeholder="Search address..."
+            loading={false}
+            enterButton
+            onSearch={searchCalled}
+          />
+        </>
+      )}
+      {!addressAddMode && !addressEditMode && address != null && !apiCalled && (
+        <div className="address_card">
+          {address.map((val, index) =>
+            val.defaultAddress === 1 ? (
+              <Badge.Ribbon
+                text="default"
+                className="profile_show_address"
+                key={index + "default"}
+              >
+                <AddressCard
+                  val={val}
+                  setAsDefault={setAsDefault}
+                  setaddressEditMode={() => setEditDataCalled(val)}
+                  deleteAddressCalled={() => deleteAddress(val.addressId)}
+                />
+              </Badge.Ribbon>
+            ) : (
               <AddressCard
                 val={val}
                 setAsDefault={setAsDefault}
                 setaddressEditMode={() => setEditDataCalled(val)}
                 deleteAddressCalled={() => deleteAddress(val.addressId)}
               />
-            </Badge.Ribbon>
-          ) : (
-            <AddressCard
-              val={val}
-              setAsDefault={setAsDefault}
-              setaddressEditMode={() => setEditDataCalled(val)}
-              deleteAddressCalled={() => deleteAddress(val.addressId)}
-            />
-          )
-        )}
+            )
+          )}
+        </div>
+      )}
       {!addressAddMode &&
         !addressEditMode &&
         address != null &&
