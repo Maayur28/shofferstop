@@ -10,6 +10,12 @@ export async function fetchPost(url = "", values = {}, accessToken = "") {
   const response = await fetch(url, options);
   if (response.status >= 200 && response.status <= 299) {
     return await response.json();
+  } else if (response.status >= 500) {
+    let error = await response.json();
+    let err = new Error();
+    err.status = error.status;
+    err.message = "Server is busy!!! Please try again later";
+    throw err;
   } else {
     let error = await response.json();
     let err = new Error();
@@ -29,6 +35,12 @@ export async function fetchGet(url = "", accessToken = "") {
   const response = await fetch(url, options);
   if (response.status >= 200 && response.status <= 299) {
     return await response.json();
+  } else if (response.status >= 500) {
+    let error = await response.json();
+    let err = new Error();
+    err.status = error.status;
+    err.message = "Server is busy!!! Please try again later";
+    throw err;
   } else {
     let error = await response.json();
     let err = new Error();
@@ -49,6 +61,12 @@ export async function updatefetchPut(url = "", accessToken = "") {
   const response = await fetch(url, options);
   if (response.status >= 200 && response.status <= 299) {
     return await response.json();
+  } else if (response.status >= 500) {
+    let error = await response.json();
+    let err = new Error();
+    err.status = error.status;
+    err.message = "Server is busy!!! Please try again later";
+    throw err;
   } else {
     let error = await response.json();
     let err = new Error();
@@ -70,6 +88,12 @@ export async function fetchPut(url = "", values = {}, accessToken = "") {
   const response = await fetch(url, options);
   if (response.status >= 200 && response.status <= 299) {
     return await response.json();
+  } else if (response.status >= 500) {
+    let error = await response.json();
+    let err = new Error();
+    err.status = error.status;
+    err.message = "Server is busy!!! Please try again later";
+    throw err;
   } else {
     let error = await response.json();
     let err = new Error();
@@ -90,6 +114,12 @@ export async function fetchDelete(url = "", accessToken = "") {
   const response = await fetch(url, options);
   if (response.status >= 200 && response.status <= 299) {
     return await response.json();
+  } else if (response.status >= 500) {
+    let error = await response.json();
+    let err = new Error();
+    err.status = error.status;
+    err.message = "Server is busy!!! Please try again later";
+    throw err;
   } else {
     let error = await response.json();
     let err = new Error();

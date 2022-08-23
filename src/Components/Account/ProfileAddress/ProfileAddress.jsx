@@ -9,6 +9,7 @@ import {
   Pagination,
   Badge,
   Spin,
+  message,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { cities } from "../Cities";
@@ -96,6 +97,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
         }),
       cookies.get("accessToken")
     );
+    message.success("Address has been deleted", 2);
     setpagination(response.pagination);
     setTotal(response.total);
     setAddress(response.addresses);
@@ -116,6 +118,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
         values,
         cookies.get("accessToken")
       );
+      message.success("Address has been updated successfully", 2);
     } else {
       response = await fetchPost(
         "https://shofferstop-userservice.herokuapp.com/users/address?" +
@@ -126,6 +129,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
         values,
         cookies.get("accessToken")
       );
+      message.success("Address has been created successfully", 2);
     }
     setpagination(response.pagination);
     setTotal(response.total);

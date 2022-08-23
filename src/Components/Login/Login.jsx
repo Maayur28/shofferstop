@@ -33,6 +33,7 @@ const Login = ({ loginModalVisible, setloginModalVisible, setfirstName }) => {
           setfirstName(response[key]);
         }
       }
+      message.success("Login Successful", 2);
       form.resetFields();
       setloginModalVisible(false);
       setapiCalled(false);
