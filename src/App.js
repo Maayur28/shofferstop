@@ -14,7 +14,7 @@ function App() {
     <StoreProvider>
       <div className="App">
         <Navbar />
-        <Divider style={{ margin: "0" }} />
+        <Divider style={{ margin: "0px 0px 5px 0px" }} />
         <Menu />
         <Divider style={{ margin: "0" }} />
         <Routes>

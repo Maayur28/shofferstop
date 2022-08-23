@@ -4,7 +4,10 @@
 }
 .carousel-container {
   padding: 10px 0px;
-  height: 60px;
+  height: 50px;
+}
+.react-multi-carousel-item {
+  width: max-content;
 }
 .react-multiple-carousel__arrow--left {
   left: 0px;
@@ -13,5 +16,25 @@
   right: 0px;
 }
 .category__item {
+  display: inline-block;
+  position: relative;
   cursor: pointer;
+  font-size: 12px !important;
+  padding: 5px 0px;
+}
+.category__item:after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  background: #40a9ff;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+}
+.category__item:hover:after {
+  width: 100%;
+  left: 0;
 }

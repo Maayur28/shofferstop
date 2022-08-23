@@ -42,7 +42,7 @@ const Menu = () => {
       sliderClass="react-multi-carousel-track"
     >
       {category.map((val, index) => (
-        <Title level={5} key={`${val}+${index}`} className="category__item">
+        <Title key={`${val}+${index}`} level={5} className="category__item">
           {val}
         </Title>
       ))}
