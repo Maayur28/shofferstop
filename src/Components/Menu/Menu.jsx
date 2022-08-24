@@ -4,6 +4,7 @@ import "react-multi-carousel/lib/styles.css";
 import "./Menu.css";
 import { Typography } from "antd";
 import getCategory from "./category";
+import { useNavigate } from "react-router-dom";
 const category = getCategory();
 
 const { Title } = Typography;
@@ -21,7 +22,13 @@ const responsive = {
     items: 5,
   },
 };
+
 const Menu = () => {
+  let navigate = useNavigate();
+  const categoryCalled = (val) => {
+    console.log(val);
+    navigate(`/category/${val}`);
+  };
   return (
     <Carousel
       swipeable={true}
@@ -42,7 +49,12 @@ const Menu = () => {
       sliderClass="react-multi-carousel-track"
     >
       {category.map((val, index) => (
-        <Title key={`${val}+${index}`} level={5} className="category__item">
+        <Title
+          key={`${val}+${index}`}
+          level={5}
+          className="category__item"
+          onClick={() => categoryCalled(val)}
+        >
           {val}
         </Title>
       ))}

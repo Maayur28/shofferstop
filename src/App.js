@@ -8,6 +8,7 @@ import HomePage from "./Components/HomePage/HomePage";
 import { Route, Routes } from "react-router-dom";
 import Account from "./Components/Account/Account";
 import NotFound from "./Components/NotFound";
+import PLP from "./Components/Product/PLP/PLP";
 
 function App() {
   return (
@@ -16,10 +17,11 @@ function App() {
         <Navbar />
         <Divider style={{ margin: "0px 0px 5px 0px" }} />
         <Menu />
-        <Divider style={{ margin: "0" }} />
+        <Divider style={{ margin: "0px 0px 10px 0px" }} />
         <Routes>
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/account" element={<Account />}></Route>
+          <Route exact path="/category/:categoryId" element={<PLP />} />
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </div>

@@ -1,0 +1,40 @@
+.plp {
+  display: flex;
+  flex-direction: column;
+  max-width: 100vw !important;
+}
+.plp_top_divier {
+  display: flex;
+  justify-content: space-between;
+}
+.plp_left_filters {
+  display: flex;
+  width: 250px;
+}
+.plp_main_content {
+  display: flex;
+}
+.plp_right_content {
+  display: flex;
+  flex-wrap: wrap;
+}
+.plp_product {
+  width: 250px;
+  min-width: 250px;
+  margin: 10px 5px;
+}
+.plp_right {
+  display: flex;
+  flex-direction: column;
+}
+.sortBy_selectDiv {
+  display: flex;
+  justify-content: flex-end;
+}
+.sortBy_selectDiv_text {
+  margin-top: 5px;
+}
+.plp_left_filters {
+  display: flex;
+  justify-content: space-between;
+}
