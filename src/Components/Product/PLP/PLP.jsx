@@ -96,6 +96,12 @@ const PLP = () => {
           let images = val.prodImage.replace("[", "");
           images = images.replace("]", "");
           images = images.split(",");
+          if (images[0].includes("http://img5a")) {
+            images[0] = images[0].replace("http://img5a", "https://rukminim1");
+          }
+          if (images[0].includes("http://img6a")) {
+            images[0] = images[0].replace("http://img6a", "https://rukminim1");
+          }
           val.prodImage = images[0].substring(1, images[0].length - 1);
         }
       });
