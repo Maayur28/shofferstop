@@ -68,7 +68,7 @@ const PLP = () => {
     setProducts([]);
     try {
       const response = await fetchGet(
-        `http://localhost:8085/product/category/${categoryId}?` +
+        `https://shofferstop-prodservice.herokuapp.com/product/category/${categoryId}?` +
           new URLSearchParams({
             sortBy: sortBy.length > 0 ? sortBy : sortByvalue,
             page: page,

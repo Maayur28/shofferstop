@@ -40,7 +40,7 @@ const Account = () => {
     setapifetch(true);
     try {
       const response = await fetchGet(
-        "http://localhost:8090/users/account",
+        "https://shofferstop-userservice.herokuapp.com/users/account",
         cookies.get("accessToken")
       );
       setaccountData({ ...response });
