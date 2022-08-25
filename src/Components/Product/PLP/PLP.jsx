@@ -30,11 +30,12 @@ const PLP = () => {
   const [minPrice, setminPrice] = useState(0);
   const [maxPrice, setmaxPrice] = useState(0);
   const filteredOptions = brand.filter((o) => !brandValue.includes(o));
+  const [sortByvalue, setsortByValue] = useState("popularity");
   const sortBy = [
-    "Popularity",
-    "Price: High to Low",
-    "Price: Low to High",
-    "Better Discount",
+    { label: "Popularity", value: "popularity" },
+    { label: "Price: High to Low", value: "htol" },
+    { label: "Price: Low to High", value: "ltoh" },
+    { label: "Better Discount", value: "betterDiscount" },
   ];
   const onPageChange = (page, pageSize) => {
     setBrand([]);
@@ -46,23 +47,30 @@ const PLP = () => {
 
   const sortByOptions = [];
   for (let i = 0; i < sortBy.length; i++) {
-    sortByOptions.push(<Option key={sortBy[i] + i}>{sortBy[i]}</Option>);
+    sortByOptions.push(
+      <Option key={sortBy[i].label + i} value={sortBy[i].value}>
+        {sortBy[i].label}
+      </Option>
+    );
   }
 
   const handleSortByChange = (value) => {
-    console.log(`Selected: ${value}`);
+    setsortByValue(value);
+    getProduct(pagination.page, pagination.pageSize, value);
   };
 
   useEffect(() => {
     getProduct(pagination.page, pagination.pageSize);
   }, [categoryId]);
 
-  const getProduct = async (page, pageSize) => {
+  const getProduct = async (page, pageSize, sortBy = "") => {
     setapiCalled(true);
+    setProducts([]);
     try {
       const response = await fetchGet(
-        `https://shofferstop-prodservice.herokuapp.com/product/category/${categoryId}?` +
+        `http://localhost:8085/product/category/${categoryId}?` +
           new URLSearchParams({
+            sortBy: sortBy.length > 0 ? sortBy : sortByvalue,
             page: page,
             pageSize: pageSize,
           })
@@ -85,7 +93,6 @@ const PLP = () => {
         if (!arr.includes(val.prodBrand)) {
           arr.push(val.prodBrand);
         }
-        console.log(val.discountedPrice, minPrice, maxPrice);
         if (val.discountedPrice < minPrice) {
           minPrice = val.discountedPrice;
         }

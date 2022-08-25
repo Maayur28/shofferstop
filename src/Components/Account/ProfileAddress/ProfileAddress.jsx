@@ -58,7 +58,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
   const getAddress = async (page, pageSize) => {
     setapiCalled(true);
     const response = await fetchGet(
-      "https://shofferstop-userservice.herokuapp.com/users/address?" +
+      "http://localhost:8090/users/address?" +
         new URLSearchParams({
           page: page,
           pageSize: pageSize,
@@ -74,7 +74,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
   const setAsDefault = async (addressId) => {
     setapiCalled(true);
     const response = await updatefetchPut(
-      `https://shofferstop-userservice.herokuapp.com/users/address/default/${addressId}?` +
+      `http://localhost:8090/users/address/default/${addressId}?` +
         new URLSearchParams({
           page: pagination.page,
           pageSize: pagination.pageSize,
@@ -90,7 +90,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
   const deleteAddress = async (addressId) => {
     setapiCalled(true);
     const response = await fetchDelete(
-      `https://shofferstop-userservice.herokuapp.com/users/address/${addressId}?` +
+      `http://localhost:8090/users/address/${addressId}?` +
         new URLSearchParams({
           page: pagination.page,
           pageSize: pagination.pageSize,
@@ -110,7 +110,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
     if (addressEditMode) {
       values.defaultAddress = values.defaultAddress === true ? 1 : 0;
       response = await fetchPut(
-        `https://shofferstop-userservice.herokuapp.com/users/address/${addressId}?` +
+        `http://localhost:8090/users/address/${addressId}?` +
           new URLSearchParams({
             page: pagination.page,
             pageSize: pagination.pageSize,
@@ -121,7 +121,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
       message.success("Address has been updated successfully", 2);
     } else {
       response = await fetchPost(
-        "https://shofferstop-userservice.herokuapp.com/users/address?" +
+        "http://localhost:8090/users/address?" +
           new URLSearchParams({
             page: pagination.page,
             pageSize: pagination.pageSize,
@@ -176,7 +176,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
   const searchCalled = async (val) => {
     setapiCalled(true);
     const response = await fetchGet(
-      "https://shofferstop-userservice.herokuapp.com/users/address/search?" +
+      "http://localhost:8090/users/address/search?" +
         new URLSearchParams({
           search: val,
           page: pagination.page,

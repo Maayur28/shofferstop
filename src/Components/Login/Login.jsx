@@ -21,9 +21,7 @@ const Login = ({ loginModalVisible, setloginModalVisible, setfirstName }) => {
       }
       setapiCalled(true);
       const response = await fetchPost(
-        `https://shofferstop-userservice.herokuapp.com/users/${
-          createAccount ? "register" : "login"
-        }`,
+        `http://localhost:8090/users/${createAccount ? "register" : "login"}`,
         values
       );
       deleteAllCookies();

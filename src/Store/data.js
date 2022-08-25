@@ -33,7 +33,7 @@ export const StoreProvider = (props) => {
           Authorization: `Bearer ${cookies.get("accessToken")}`,
         },
       };
-      fetch("https://shofferstop-userservice.herokuapp.com/users", options)
+      fetch("http://localhost:8090/users", options)
         .then((response) => response.json())
         .then((data) => {
           if (data != null) {

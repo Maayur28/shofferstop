@@ -26,7 +26,7 @@ const responsive = {
 const Menu = () => {
   let navigate = useNavigate();
   const categoryCalled = (val) => {
-    console.log(val);
+    localStorage.setItem("category", val);
     navigate(`/category/${val}`);
   };
   return (
@@ -52,7 +52,11 @@ const Menu = () => {
         <Title
           key={`${val}+${index}`}
           level={5}
-          className="category__item"
+          className={
+            localStorage.getItem("category") === val
+              ? "category__item_selected"
+              : "category__item"
+          }
           onClick={() => categoryCalled(val)}
         >
           {val}
