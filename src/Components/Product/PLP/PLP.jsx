@@ -31,6 +31,7 @@ const PLP = () => {
   const [maxPrice, setmaxPrice] = useState(0);
   const filteredOptions = brand.filter((o) => !brandValue.includes(o));
   const [sortByvalue, setsortByValue] = useState("popularity");
+
   const sortBy = [
     { label: "Popularity", value: "popularity" },
     { label: "Price: High to Low", value: "htol" },
@@ -39,10 +40,11 @@ const PLP = () => {
   ];
   const onPageChange = (page, pageSize) => {
     setBrand([]);
-    setbrandValue([]);
     setminPrice(0);
     setmaxPrice(0);
-    getProduct(page, pageSize);
+    let filter = {};
+    filter.brand = brandValue.toString;
+    getProduct(page, pageSize, "", filter);
   };
 
   const sortByOptions = [];
@@ -56,14 +58,34 @@ const PLP = () => {
 
   const handleSortByChange = (value) => {
     setsortByValue(value);
-    getProduct(pagination.page, pagination.pageSize, value);
+    let filter = {};
+    getProduct(pagination.page, pagination.pageSize, value, filter);
+  };
+
+  const onPriceChange = (val) => {
+    let filter = {};
+    filter.brand = brandValue.toString();
+    filter.price = val.toString();
+    getProduct(pagination.page, pagination.pageSize, sortByvalue, filter);
   };
 
   useEffect(() => {
-    getProduct(pagination.page, pagination.pageSize);
+    setbrandValue([]);
+    let filter = {};
+    getProduct(pagination.page, pagination.pageSize, sortByvalue, filter);
   }, [categoryId]);
 
-  const getProduct = async (page, pageSize, sortBy = "") => {
+  useEffect(() => {
+    if (brandValue.length > 0) {
+      let filter = {};
+      filter.brand = brandValue.toString();
+      getProduct(pagination.page, pagination.pageSize, sortByvalue, filter);
+    }
+  }, [brandValue]);
+
+  const convertToString = (brandValue) => {};
+
+  const getProduct = async (page, pageSize, sortBy = "", filter = {}) => {
     setapiCalled(true);
     setProducts([]);
     try {
@@ -71,12 +93,14 @@ const PLP = () => {
         `https://shofferstop-prodservice.herokuapp.com/product/category/${categoryId}?` +
           new URLSearchParams({
             sortBy: sortBy.length > 0 ? sortBy : sortByvalue,
+            filter: JSON.stringify(filter),
             page: page,
             pageSize: pageSize,
           })
       );
       setpagination(response.pagination);
       setTotal(response.total);
+      setBrand([...response.brands]);
       setProducts(constructProd(response.products));
       setapiCalled(false);
     } catch (err) {
@@ -85,14 +109,10 @@ const PLP = () => {
   };
 
   const constructProd = (products) => {
-    let arr = [];
     let minPrice = Math.min(),
       maxPrice = Math.max();
     if (products != null && products.length > 0) {
       products.forEach((val) => {
-        if (!arr.includes(val.prodBrand)) {
-          arr.push(val.prodBrand);
-        }
         if (val.discountedPrice < minPrice) {
           minPrice = val.discountedPrice;
         }
@@ -114,7 +134,6 @@ const PLP = () => {
       });
       setminPrice(minPrice);
       setmaxPrice(maxPrice);
-      setBrand(arr);
     }
     return products;
   };
@@ -127,6 +146,7 @@ const PLP = () => {
       value,
     });
   }
+
   return (
     <div className="plp">
       <div className="plp_top_divier">
@@ -184,6 +204,7 @@ const PLP = () => {
                     defaultValue={[minPrice, maxPrice]}
                     min={minPrice}
                     max={maxPrice}
+                    onAfterChange={onPriceChange}
                   />
                 </Panel>
               </Collapse>

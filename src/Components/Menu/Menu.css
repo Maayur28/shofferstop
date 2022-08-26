@@ -39,5 +39,9 @@
   left: 0;
 }
 .category__item_selected {
+  display: inline-block;
+  position: relative;
+  font-size: 12px !important;
+  padding: 5px 0px;
   color: #40a9ff !important;
 }
