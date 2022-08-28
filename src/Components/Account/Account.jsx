@@ -34,7 +34,7 @@ const Account = () => {
       deleteAllCookies();
       setisLogin(false);
     }
-  }, [isLogin]);
+  }, [isLogin]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getAccount = async () => {
     setapifetch(true);

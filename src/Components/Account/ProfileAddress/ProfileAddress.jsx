@@ -49,7 +49,7 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
       deleteAllCookies();
       setisLogin(false);
     }
-  }, [isLogin]);
+  }, [isLogin]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onPageChange = (page, pageSize) => {
     getAddress(page, pageSize);

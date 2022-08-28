@@ -16,6 +16,7 @@ import SimilarProduct from "../SimilarProduct";
 import { StoreContext } from "./../../../Store/data";
 import deleteAllCookies from "../../Util";
 import RatingStar from "../RatingStar";
+import axios from "axios";
 
 const { Title, Text } = Typography;
 
@@ -40,7 +41,7 @@ const PDP = () => {
     setwishlisted(false);
     setSimilarProd(false);
     getProduct();
-  }, [productId]);
+  }, [productId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setRateProduct(false);
@@ -54,7 +55,7 @@ const PDP = () => {
       setwishlisted(false);
       getProduct();
     }
-  }, [isLogin]);
+  }, [isLogin]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getRating = async (productName) => {
     setapiCalled(true);
@@ -142,14 +143,28 @@ const PDP = () => {
           }
           images[i] = images[i].trim();
           newImageArray[i] = images[i].substring(1, images[i].length - 1);
-          carouselimage.push({
-            original: newImageArray[i],
-            thumbnail: newImageArray[i],
-            originalHeight: "400px",
-            originalWidth: "400px",
-            thumbnailHeight: "50px",
-            thumbnailWidth: "50px",
-          });
+          axios
+            .get(newImageArray[i])
+            .then((data) => {
+              carouselimage.push({
+                original: newImageArray[i],
+                thumbnail: newImageArray[i],
+                originalHeight: "400px",
+                originalWidth: "400px",
+                thumbnailHeight: "50px",
+                thumbnailWidth: "50px",
+              });
+            })
+            .catch((error) => {
+              carouselimage.push({
+                original: "/image_not_available.png",
+                thumbnail: "/image_not_available.png",
+                originalHeight: "400px",
+                originalWidth: "400px",
+                thumbnailHeight: "50px",
+                thumbnailWidth: "50px",
+              });
+            });
         }
         product.prodImage = newImageArray;
         setcarouselImage(carouselimage);

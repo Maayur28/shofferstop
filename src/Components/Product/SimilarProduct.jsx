@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { fetchGet } from "../FetchData";
-import { Card, Typography, Skeleton } from "antd";
+import { Card, Typography, Skeleton, Image } from "antd";
 import { useNavigate } from "react-router-dom";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const { Text, Paragraph } = Typography;
 const { Meta } = Card;
@@ -36,7 +35,7 @@ const SimilarProduct = ({ categoryId, productName }) => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     getProduct();
-  }, [categoryId]);
+  }, [categoryId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pdpCalled = (name) => {
     navigate(`/${name}`);
@@ -113,14 +112,16 @@ const SimilarProduct = ({ categoryId, productName }) => {
               style={{ textAlign: "center" }}
               onClick={() => pdpCalled(val.productName)}
               cover={
-                <LazyLoadImage
-                  style={{
-                    padding: "25px 25px",
-                  }}
+                <Image
                   alt={val.productName}
                   src={val.prodImage}
-                  width="100%"
-                  height="200px"
+                  style={{
+                    padding: "25px 25px",
+                    width: "100%",
+                    height: "200px",
+                  }}
+                  fallback="/image_not_available.png"
+                  preview={false}
                 />
               }
               actions={[]}

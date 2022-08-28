@@ -1,7 +1,7 @@
 import "./App.css";
 import Navbar from "./Components/Navbar/Navbar";
 import { StoreProvider } from "./Store/data";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import Menu from "./Components/Menu/Menu";
 import { Divider } from "../node_modules/antd/lib/index";
 import HomePage from "./Components/HomePage/HomePage";

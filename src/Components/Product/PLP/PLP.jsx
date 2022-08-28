@@ -13,6 +13,7 @@ import {
   Pagination,
   Skeleton,
   Result,
+  Image,
 } from "antd";
 import deleteAllCookies from "../../Util";
 import { StoreContext } from "./../../../Store/data";
@@ -73,7 +74,7 @@ const PLP = () => {
       deleteAllCookies();
       setisLogin(false);
     }
-  }, [isLogin]);
+  }, [isLogin]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getWishlist = async () => {
     setapiCalled(true);
@@ -142,7 +143,7 @@ const PLP = () => {
       let filter = {};
       getProduct(pagination.page, pagination.pageSize, sortByvalue, filter);
     }
-  }, [categoryId]);
+  }, [categoryId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setbrandValue([]);
@@ -155,7 +156,7 @@ const PLP = () => {
         filter
       );
     }
-  }, [searchId]);
+  }, [searchId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (brandValue.length > 0) {
@@ -172,7 +173,7 @@ const PLP = () => {
         getProduct(pagination.page, pagination.pageSize, sortByvalue, filter);
       }
     }
-  }, [brandValue]);
+  }, [brandValue]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getProduct = async (page, pageSize, sortBy = "", filter = {}) => {
     setapiCalled(true);
@@ -363,7 +364,7 @@ const PLP = () => {
                     key={index}
                     style={{ textAlign: "center" }}
                     cover={
-                      <img
+                      <Image
                         alt={val.productName}
                         src={val.prodImage}
                         style={{
@@ -371,6 +372,8 @@ const PLP = () => {
                           width: "100%",
                           height: "200px",
                         }}
+                        fallback="/image_not_available.png"
+                        preview={false}
                         onClick={() => pdpCalled(val.productName)}
                       />
                     }
