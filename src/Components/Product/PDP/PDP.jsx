@@ -38,7 +38,14 @@ const PDP = () => {
 
   useEffect(() => {
     setRateProduct(false);
-    setrateValue(0);
+    if (isLogin === false) {
+      setrateValue(0);
+    } else {
+      setRatingData({});
+      setProductData({});
+      setSimilarProd(false);
+      getProduct();
+    }
   }, [isLogin]);
 
   const getRating = async (productName) => {
