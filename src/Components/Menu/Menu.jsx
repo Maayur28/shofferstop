@@ -30,39 +30,39 @@ const Menu = () => {
     navigate(`/category/${val}`);
   };
   return (
-    <Carousel
-      swipeable={true}
-      draggable={false}
-      showDots={false}
-      responsive={responsive}
-      ssr={true}
-      infinite={true}
-      // autoPlay={this.props.deviceType !== "mobile" ? true : false}
-      autoPlaySpeed={1000}
-      keyBoardControl={true}
-      customTransition="transform 300ms ease-in-out"
-      transitionDuration={100}
-      containerClass="carousel-container"
-      //deviceType={this.props.deviceType}
-      dotListClass="custom-dot-list-style"
-      itemClass="carousel-item"
-      sliderClass="react-multi-carousel-track"
-    >
-      {category.map((val, index) => (
-        <Title
-          key={`${val}+${index}`}
-          level={5}
-          className={
-            localStorage.getItem("category") === val
-              ? "category__item_selected"
-              : "category__item"
-          }
-          onClick={() => categoryCalled(val)}
-        >
-          {val}
-        </Title>
-      ))}
-    </Carousel>
+    <div className="menu_slider">
+      <Carousel
+        swipeable={true}
+        draggable={false}
+        showDots={false}
+        responsive={responsive}
+        ssr={true}
+        infinite={true}
+        autoPlaySpeed={1000}
+        keyBoardControl={true}
+        customTransition="transform 300ms ease-in-out"
+        transitionDuration={100}
+        containerClass="carousel-container"
+        dotListClass="custom-dot-list-style"
+        itemClass="carousel-item"
+        sliderClass="react-multi-carousel-track"
+      >
+        {category.map((val, index) => (
+          <Title
+            key={`${val}+${index}`}
+            level={5}
+            className={
+              localStorage.getItem("category") === val
+                ? "category__item_selected"
+                : "category__item"
+            }
+            onClick={() => categoryCalled(val)}
+          >
+            {val}
+          </Title>
+        ))}
+      </Carousel>
+    </div>
   );
 };
 

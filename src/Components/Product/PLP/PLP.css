@@ -38,3 +38,8 @@
   display: flex;
   justify-content: space-between;
 }
+.card_similar_product {
+  width: 200px;
+  min-width: 200px;
+  margin: 10px 10px;
+}

@@ -9,6 +9,7 @@ import { Route, Routes } from "react-router-dom";
 import Account from "./Components/Account/Account";
 import NotFound from "./Components/NotFound";
 import PLP from "./Components/Product/PLP/PLP";
+import PDP from "./Components/Product/PDP/PDP";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/account" element={<Account />}></Route>
           <Route exact path="/category/:categoryId" element={<PLP />} />
+          <Route exact path="/:productId" element={<PDP />} />
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </div>

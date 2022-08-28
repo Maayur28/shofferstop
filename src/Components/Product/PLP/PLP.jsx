@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchGet } from "../../FetchData";
 import {
   Card,
@@ -20,6 +20,7 @@ const { Option } = Select;
 const { Panel } = Collapse;
 
 const PLP = () => {
+  let navigate = useNavigate();
   const { categoryId } = useParams();
   const [apiCalled, setapiCalled] = useState(false);
   const [products, setProducts] = useState([]);
@@ -27,6 +28,7 @@ const PLP = () => {
   const [total, setTotal] = useState(10);
   const [brand, setBrand] = useState([]);
   const [brandValue, setbrandValue] = useState([]);
+  const [priceValue, setPriceValue] = useState([]);
   const [minPrice, setminPrice] = useState(0);
   const [maxPrice, setmaxPrice] = useState(0);
   const filteredOptions = brand.filter((o) => !brandValue.includes(o));
@@ -47,6 +49,19 @@ const PLP = () => {
     getProduct(page, pageSize, "", filter);
   };
 
+  const pdpCalled = (name) => {
+    navigate(`/${name}`);
+  };
+
+  const onClearAll = () => {
+    setbrandValue([]);
+    setPriceValue([]);
+    setminPrice(0);
+    setmaxPrice(0);
+    let filter = {};
+    getProduct(pagination.page, pagination.pageSize, "", filter);
+  };
+
   const sortByOptions = [];
   for (let i = 0; i < sortBy.length; i++) {
     sortByOptions.push(
@@ -59,11 +74,14 @@ const PLP = () => {
   const handleSortByChange = (value) => {
     setsortByValue(value);
     let filter = {};
+    filter.brand = brandValue.toString();
+    filter.price = priceValue.toString();
     getProduct(pagination.page, pagination.pageSize, value, filter);
   };
 
   const onPriceChange = (val) => {
     let filter = {};
+    setPriceValue(val);
     filter.brand = brandValue.toString();
     filter.price = val.toString();
     getProduct(pagination.page, pagination.pageSize, sortByvalue, filter);
@@ -154,8 +172,15 @@ const PLP = () => {
           <Title level={4} style={{ margin: "0px" }}>
             Filters
           </Title>
-          <Title level={4} style={{ margin: "0px" }} type="danger">
-            Clear all
+          <Title
+            level={4}
+            style={{ margin: "0px", cursor: "pointer" }}
+            type="danger"
+            onClick={onClearAll}
+          >
+            {brandValue.length > 0 || priceValue.length > 0
+              ? "Clear all"
+              : null}
           </Title>
         </div>
         <div className="sortBy_selectDiv">
@@ -221,9 +246,11 @@ const PLP = () => {
             {!apiCalled ? (
               products.map((val, index) => (
                 <Card
+                  hoverable
                   className="plp_product"
                   key={index}
                   style={{ textAlign: "center" }}
+                  onClick={() => pdpCalled(val.productName)}
                   cover={
                     <img
                       alt={val.productName}
