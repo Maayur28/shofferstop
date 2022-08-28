@@ -4,6 +4,7 @@ import "react-multi-carousel/lib/styles.css";
 import { fetchGet } from "../FetchData";
 import { Card, Typography, Skeleton } from "antd";
 import { useNavigate } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const { Text, Paragraph } = Typography;
 const { Meta } = Card;
@@ -110,14 +111,14 @@ const SimilarProduct = ({ categoryId, productName }) => {
               style={{ textAlign: "center" }}
               onClick={() => pdpCalled(val.productName)}
               cover={
-                <img
-                  alt={val.productName}
-                  src={val.prodImage}
+                <LazyLoadImage
                   style={{
                     padding: "25px 25px",
-                    width: "100%",
-                    height: "200px",
                   }}
+                  alt={val.productName}
+                  src={val.prodImage}
+                  width="100%"
+                  height="200px"
                 />
               }
               actions={[]}
