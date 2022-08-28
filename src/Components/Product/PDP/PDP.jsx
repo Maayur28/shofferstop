@@ -407,7 +407,7 @@ const PDP = () => {
       {similarProd && (
         <div>
           <Title level={3} style={{ textAlign: "left" }}>
-            Similar Products
+            Items you may like
           </Title>
           <div className="pdp_simi_product">
             <SimilarProduct

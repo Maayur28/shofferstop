@@ -12,6 +12,7 @@ import {
   Slider,
   Pagination,
   Skeleton,
+  Result,
 } from "antd";
 import deleteAllCookies from "../../Util";
 import { StoreContext } from "./../../../Store/data";
@@ -27,7 +28,7 @@ const PLP = () => {
   const { isLogin, setisLogin } = useContext(StoreContext);
   const cookies = new Cookies();
   let navigate = useNavigate();
-  const { categoryId } = useParams();
+  const { categoryId, searchId } = useParams();
   const [apiCalled, setapiCalled] = useState(false);
   const [products, setProducts] = useState([]);
   const [wishlistData, setWishlistData] = useState([]);
@@ -53,7 +54,11 @@ const PLP = () => {
     setmaxPrice(0);
     let filter = {};
     filter.brand = brandValue.toString;
-    getProduct(page, pageSize, "", filter);
+    if (searchId !== undefined) {
+      getSearchProduct(page, pageSize, "", filter);
+    } else {
+      getProduct(page, pageSize, "", filter);
+    }
   };
 
   const pdpCalled = (name) => {
@@ -86,7 +91,11 @@ const PLP = () => {
     setminPrice(0);
     setmaxPrice(0);
     let filter = {};
-    getProduct(pagination.page, pagination.pageSize, "", filter);
+    if (searchId !== undefined) {
+      getSearchProduct(pagination.page, pagination.pageSize, "", filter);
+    } else {
+      getProduct(pagination.page, pagination.pageSize, "", filter);
+    }
   };
 
   const sortByOptions = [];
@@ -103,7 +112,11 @@ const PLP = () => {
     let filter = {};
     filter.brand = brandValue.toString();
     filter.price = priceValue.toString();
-    getProduct(pagination.page, pagination.pageSize, value, filter);
+    if (searchId !== undefined) {
+      getSearchProduct(pagination.page, pagination.pageSize, value, filter);
+    } else {
+      getProduct(pagination.page, pagination.pageSize, value, filter);
+    }
   };
 
   const onPriceChange = (val) => {
@@ -111,20 +124,53 @@ const PLP = () => {
     setPriceValue(val);
     filter.brand = brandValue.toString();
     filter.price = val.toString();
-    getProduct(pagination.page, pagination.pageSize, sortByvalue, filter);
+    if (searchId !== undefined) {
+      getSearchProduct(
+        pagination.page,
+        pagination.pageSize,
+        sortByvalue,
+        filter
+      );
+    } else {
+      getProduct(pagination.page, pagination.pageSize, sortByvalue, filter);
+    }
   };
 
   useEffect(() => {
     setbrandValue([]);
-    let filter = {};
-    getProduct(pagination.page, pagination.pageSize, sortByvalue, filter);
+    if (categoryId !== undefined) {
+      let filter = {};
+      getProduct(pagination.page, pagination.pageSize, sortByvalue, filter);
+    }
   }, [categoryId]);
+
+  useEffect(() => {
+    setbrandValue([]);
+    if (searchId !== undefined) {
+      let filter = {};
+      getSearchProduct(
+        pagination.page,
+        pagination.pageSize,
+        sortByvalue,
+        filter
+      );
+    }
+  }, [searchId]);
 
   useEffect(() => {
     if (brandValue.length > 0) {
       let filter = {};
       filter.brand = brandValue.toString();
-      getProduct(pagination.page, pagination.pageSize, sortByvalue, filter);
+      if (searchId !== undefined) {
+        getSearchProduct(
+          pagination.page,
+          pagination.pageSize,
+          sortByvalue,
+          filter
+        );
+      } else {
+        getProduct(pagination.page, pagination.pageSize, sortByvalue, filter);
+      }
     }
   }, [brandValue]);
 
@@ -134,6 +180,29 @@ const PLP = () => {
     try {
       const response = await fetchGet(
         `https://shofferstop-prodservice.herokuapp.com/product/category/${categoryId}?` +
+          new URLSearchParams({
+            sortBy: sortBy.length > 0 ? sortBy : sortByvalue,
+            filter: JSON.stringify(filter),
+            page: page,
+            pageSize: pageSize,
+          })
+      );
+      setpagination(response.pagination);
+      setTotal(response.total);
+      setBrand([...response.brands]);
+      setProducts(constructProd(response.products));
+      setapiCalled(false);
+    } catch (err) {
+      message.error(err.message);
+    }
+  };
+
+  const getSearchProduct = async (page, pageSize, sortBy = "", filter = {}) => {
+    setapiCalled(true);
+    setProducts([]);
+    try {
+      const response = await fetchGet(
+        `https://shofferstop-prodservice.herokuapp.com/product/search/${searchId}?` +
           new URLSearchParams({
             sortBy: sortBy.length > 0 ? sortBy : sortByvalue,
             filter: JSON.stringify(filter),
@@ -286,87 +355,97 @@ const PLP = () => {
         <div className="plp_right">
           <div className="plp_right_content">
             {!apiCalled ? (
-              products.map((val, index) => (
-                <Card
-                  hoverable
-                  className="plp_product"
-                  key={index}
-                  style={{ textAlign: "center" }}
-                  cover={
-                    <img
-                      alt={val.productName}
-                      src={val.prodImage}
-                      style={{
-                        padding: "25px 25px",
-                        width: "100%",
-                        height: "200px",
-                      }}
-                      onClick={() => pdpCalled(val.productName)}
-                    />
-                  }
-                  actions={[]}
-                >
-                  <Meta
-                    onClick={() => pdpCalled(val.productName)}
-                    style={{ textAlign: "left" }}
-                    title={
-                      val.prodBrand == null || val.prodBrand === undefined
-                        ? "Brand not available"
-                        : val.prodBrand
-                    }
-                    description={
-                      <Paragraph ellipsis={true}>{val.productName}</Paragraph>
-                    }
-                  />
-                  <div className="plp_wishlist_div">
-                    {wishlistData.includes(val.productName) ? (
-                      <HeartFilled
-                        className="plp_wishlisted"
-                        onClick={() => plpWishlistCalled(val.productName)}
+              products.length > 0 ? (
+                products.map((val, index) => (
+                  <Card
+                    hoverable
+                    className="plp_product"
+                    key={index}
+                    style={{ textAlign: "center" }}
+                    cover={
+                      <img
+                        alt={val.productName}
+                        src={val.prodImage}
+                        style={{
+                          padding: "25px 25px",
+                          width: "100%",
+                          height: "200px",
+                        }}
+                        onClick={() => pdpCalled(val.productName)}
                       />
-                    ) : (
-                      <HeartOutlined
-                        className="plp_wishlist"
-                        onClick={() => plpWishlistCalled(val.productName)}
-                      />
-                    )}
-                  </div>
-                  <div
-                    style={{ textAlign: "left" }}
-                    onClick={() => pdpCalled(val.productName)}
+                    }
+                    actions={[]}
                   >
-                    <Text
-                      strong
-                      style={{ fontSize: "16px", marginRight: "5px" }}
+                    <Meta
+                      onClick={() => pdpCalled(val.productName)}
+                      style={{ textAlign: "left" }}
+                      title={
+                        val.prodBrand == null || val.prodBrand === undefined
+                          ? "Brand not available"
+                          : val.prodBrand
+                      }
+                      description={
+                        <Paragraph ellipsis={true}>{val.productName}</Paragraph>
+                      }
+                    />
+                    <div className="plp_wishlist_div">
+                      {wishlistData.includes(val.productName) ? (
+                        <HeartFilled
+                          className="plp_wishlisted"
+                          onClick={() => plpWishlistCalled(val.productName)}
+                        />
+                      ) : (
+                        <HeartOutlined
+                          className="plp_wishlist"
+                          onClick={() => plpWishlistCalled(val.productName)}
+                        />
+                      )}
+                    </div>
+                    <div
+                      style={{ textAlign: "left" }}
+                      onClick={() => pdpCalled(val.productName)}
                     >
-                      ₹{val.discountedPrice}
-                    </Text>
-                    {val.discountedPrice !== val.retailPrice && (
-                      <>
-                        <Text
-                          delete
-                          type="secondary"
-                          style={{ fontSize: "14px", marginRight: "5px" }}
-                        >
-                          ₹{val.retailPrice}
-                        </Text>
-                        <Text
-                          type="success"
-                          strong
-                          style={{ fontSize: "14px" }}
-                        >
-                          {Math.round(
-                            ((val.retailPrice - val.discountedPrice) /
-                              val.retailPrice) *
-                              100
-                          )}
-                          % off
-                        </Text>
-                      </>
-                    )}
-                  </div>
-                </Card>
-              ))
+                      <Text
+                        strong
+                        style={{ fontSize: "16px", marginRight: "5px" }}
+                      >
+                        ₹{val.discountedPrice}
+                      </Text>
+                      {val.discountedPrice !== val.retailPrice && (
+                        <>
+                          <Text
+                            delete
+                            type="secondary"
+                            style={{ fontSize: "14px", marginRight: "5px" }}
+                          >
+                            ₹{val.retailPrice}
+                          </Text>
+                          <Text
+                            type="success"
+                            strong
+                            style={{ fontSize: "14px" }}
+                          >
+                            {Math.round(
+                              ((val.retailPrice - val.discountedPrice) /
+                                val.retailPrice) *
+                                100
+                            )}
+                            % off
+                          </Text>
+                        </>
+                      )}
+                    </div>
+                  </Card>
+                ))
+              ) : (
+                <div className="plp_not_found">
+                  <Result
+                    status="404"
+                    title={`You searched for ${searchId}`}
+                    subTitle="Sorry, no search results found!"
+                  />
+                </div>
+              )
             ) : (
               <div style={{ display: "flex", flexWrap: "wrap" }}>
                 <Skeleton.Input
@@ -412,15 +491,17 @@ const PLP = () => {
               </div>
             )}
           </div>
-          <Pagination
-            showQuickJumper
-            pageSize={pagination.pageSize}
-            current={pagination.page}
-            total={total}
-            pageSizeOptions={[12, 15, 18]}
-            showSizeChanger={total > 10}
-            onChange={onPageChange}
-          />
+          {products.length > 0 && (
+            <Pagination
+              showQuickJumper
+              pageSize={pagination.pageSize}
+              current={pagination.page}
+              total={total}
+              pageSizeOptions={[12, 15, 18]}
+              showSizeChanger={total > 10}
+              onChange={onPageChange}
+            />
+          )}
         </div>
       </div>
     </div>

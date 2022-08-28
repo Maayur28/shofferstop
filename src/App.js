@@ -23,6 +23,7 @@ function App() {
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/account" element={<Account />}></Route>
           <Route exact path="/category/:categoryId" element={<PLP />} />
+          <Route exact path="/search/:searchId" element={<PLP />} />
           <Route exact path="/:productId" element={<PDP />} />
           <Route path="*" element={<NotFound />}></Route>
         </Routes>

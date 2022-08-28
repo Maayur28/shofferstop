@@ -4,7 +4,7 @@ import "react-multi-carousel/lib/styles.css";
 import "./Menu.css";
 import { Typography } from "antd";
 import getCategory from "./category";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 const category = getCategory();
 
 const { Title } = Typography;
@@ -25,6 +25,7 @@ const responsive = {
 
 const Menu = () => {
   let navigate = useNavigate();
+  let location = useLocation();
   const categoryCalled = (val) => {
     localStorage.setItem("category", val);
     navigate(`/category/${val}`);
@@ -52,6 +53,7 @@ const Menu = () => {
             key={`${val}+${index}`}
             level={5}
             className={
+              location.pathname.includes("/category") &&
               localStorage.getItem("category") === val
                 ? "category__item_selected"
                 : "category__item"

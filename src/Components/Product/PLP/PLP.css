@@ -68,3 +68,11 @@
 .plp_product:hover .plp_wishlist_div {
   display: block;
 }
+.plp_not_found {
+  display: flex;
+  width: calc(100vw - 400px);
+  min-width: 300px;
+  min-height: 200px;
+  height: calc(100vh - 200px);
+  justify-content: center;
+}

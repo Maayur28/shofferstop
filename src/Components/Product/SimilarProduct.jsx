@@ -28,6 +28,8 @@ const responsive = {
   },
 };
 
+const sortBy = ["popularity", "ltoh", "htol"];
+
 const SimilarProduct = ({ categoryId, productName }) => {
   let navigate = useNavigate();
   const [apiCalled, setapiCalled] = useState(false);
@@ -47,7 +49,7 @@ const SimilarProduct = ({ categoryId, productName }) => {
       const response = await fetchGet(
         `https://shofferstop-prodservice.herokuapp.com/product/category/${categoryId}?` +
           new URLSearchParams({
-            sortBy: "popularity",
+            sortBy: sortBy[Math.floor(Math.random() * 3 + 1) - 1],
             filter: "{}",
             page: 1,
             pageSize: 50,
