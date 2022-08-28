@@ -5,7 +5,11 @@ import Cookies from "universal-cookie";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { message, Typography, Divider, Button, Rate, Skeleton } from "antd";
 import ShowMoreText from "react-show-more-text";
-import { ShoppingCartOutlined, HeartOutlined } from "@ant-design/icons";
+import {
+  ShoppingCartOutlined,
+  HeartOutlined,
+  HeartFilled,
+} from "@ant-design/icons";
 import "./PDP.css";
 import ImageGallery from "react-image-gallery";
 import SimilarProduct from "../SimilarProduct";
@@ -26,12 +30,14 @@ const PDP = () => {
   const [rateProduct, setRateProduct] = useState(false);
   const [rateValue, setrateValue] = useState();
   const [similarProd, setSimilarProd] = useState(false);
+  const [wishlisted, setwishlisted] = useState(false);
 
   const desc = ["terrible", "bad", "satisfactory", "good", "excellent"];
 
   useEffect(() => {
     setRatingData({});
     setProductData({});
+    setwishlisted(false);
     setSimilarProd(false);
     getProduct();
   }, [productId]);
@@ -40,10 +46,12 @@ const PDP = () => {
     setRateProduct(false);
     if (isLogin === false) {
       setrateValue(0);
+      setwishlisted(false);
     } else {
       setRatingData({});
       setProductData({});
       setSimilarProd(false);
+      setwishlisted(false);
       getProduct();
     }
   }, [isLogin]);
@@ -92,6 +100,14 @@ const PDP = () => {
     setRateProduct(false);
   };
 
+  const getWishlistCalled = async (productName) => {
+    const response = await fetchGet(
+      `https://shofferstop-userservice.herokuapp.com/users/wishlist/${productName}`,
+      cookies.get("accessToken")
+    );
+    setwishlisted(response.wishlisted);
+  };
+
   const getProduct = async () => {
     setapiCalled(true);
     try {
@@ -99,6 +115,7 @@ const PDP = () => {
         `https://shofferstop-prodservice.herokuapp.com/product/${productId}`
       );
       setSimilarProd(true);
+      getWishlistCalled(response.productName);
       getRating(response.productName);
       setProductData({ ...constructProd(response) });
       setapiCalled(false);
@@ -198,6 +215,27 @@ const PDP = () => {
     }
   };
 
+  const pdpWishlistCalled = async (productName) => {
+    if (isLogin && productName != null) {
+      let values = {};
+      values.productName = productName;
+      const response = await fetchPost(
+        "https://shofferstop-userservice.herokuapp.com/users/wishlist",
+        values,
+        cookies.get("accessToken")
+      );
+      if (response.products.includes(productName)) {
+        setwishlisted(true);
+      } else {
+        setwishlisted(false);
+      }
+    } else {
+      deleteAllCookies();
+      setisLogin(false);
+      message.info("Please login to wishlist");
+    }
+  };
+
   return (
     <div className="pdp">
       <div className="pdp_prod">
@@ -274,11 +312,12 @@ const PDP = () => {
                 </Button>
                 <Button
                   danger
-                  icon={<HeartOutlined />}
+                  icon={wishlisted ? <HeartFilled /> : <HeartOutlined />}
                   size="large"
                   shape="round"
+                  onClick={() => pdpWishlistCalled(productData.productName)}
                 >
-                  Wishlist
+                  {wishlisted ? "Wishlisted" : "Wishlist"}
                 </Button>
               </div>
             </div>

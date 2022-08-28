@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchGet } from "../../FetchData";
+import { fetchGet, fetchPost } from "../../FetchData";
+import Cookies from "universal-cookie";
 import {
   Card,
   message,
@@ -12,6 +13,9 @@ import {
   Pagination,
   Skeleton,
 } from "antd";
+import deleteAllCookies from "../../Util";
+import { StoreContext } from "./../../../Store/data";
+import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import "./PLP.css";
 
 const { Title, Text, Paragraph } = Typography;
@@ -20,10 +24,13 @@ const { Option } = Select;
 const { Panel } = Collapse;
 
 const PLP = () => {
+  const { isLogin, setisLogin } = useContext(StoreContext);
+  const cookies = new Cookies();
   let navigate = useNavigate();
   const { categoryId } = useParams();
   const [apiCalled, setapiCalled] = useState(false);
   const [products, setProducts] = useState([]);
+  const [wishlistData, setWishlistData] = useState([]);
   const [pagination, setpagination] = useState({ page: 1, pageSize: 12 });
   const [total, setTotal] = useState(10);
   const [brand, setBrand] = useState([]);
@@ -51,6 +58,26 @@ const PLP = () => {
 
   const pdpCalled = (name) => {
     navigate(`/${name}`);
+  };
+
+  useEffect(() => {
+    setWishlistData([]);
+    if (isLogin === true) {
+      getWishlist();
+    } else {
+      deleteAllCookies();
+      setisLogin(false);
+    }
+  }, [isLogin]);
+
+  const getWishlist = async () => {
+    setapiCalled(true);
+    const response = await fetchGet(
+      `https://shofferstop-userservice.herokuapp.com/users/wishlist`,
+      cookies.get("accessToken")
+    );
+    setWishlistData([...response.products]);
+    setapiCalled(false);
   };
 
   const onClearAll = () => {
@@ -163,6 +190,23 @@ const PLP = () => {
     });
   }
 
+  const plpWishlistCalled = async (productName) => {
+    if (isLogin && productName != null) {
+      let values = {};
+      values.productName = productName;
+      const response = await fetchPost(
+        "https://shofferstop-userservice.herokuapp.com/users/wishlist",
+        values,
+        cookies.get("accessToken")
+      );
+      setWishlistData([...response.products]);
+    } else {
+      deleteAllCookies();
+      setisLogin(false);
+      message.info("Please login to wishlist");
+    }
+  };
+
   return (
     <div className="plp">
       <div className="plp_top_divier">
@@ -248,7 +292,6 @@ const PLP = () => {
                   className="plp_product"
                   key={index}
                   style={{ textAlign: "center" }}
-                  onClick={() => pdpCalled(val.productName)}
                   cover={
                     <img
                       alt={val.productName}
@@ -258,11 +301,13 @@ const PLP = () => {
                         width: "100%",
                         height: "200px",
                       }}
+                      onClick={() => pdpCalled(val.productName)}
                     />
                   }
                   actions={[]}
                 >
                   <Meta
+                    onClick={() => pdpCalled(val.productName)}
                     style={{ textAlign: "left" }}
                     title={
                       val.prodBrand == null || val.prodBrand === undefined
@@ -273,7 +318,23 @@ const PLP = () => {
                       <Paragraph ellipsis={true}>{val.productName}</Paragraph>
                     }
                   />
-                  <div style={{ textAlign: "left" }}>
+                  <div className="plp_wishlist_div">
+                    {wishlistData.includes(val.productName) ? (
+                      <HeartFilled
+                        className="plp_wishlisted"
+                        onClick={() => plpWishlistCalled(val.productName)}
+                      />
+                    ) : (
+                      <HeartOutlined
+                        className="plp_wishlist"
+                        onClick={() => plpWishlistCalled(val.productName)}
+                      />
+                    )}
+                  </div>
+                  <div
+                    style={{ textAlign: "left" }}
+                    onClick={() => pdpCalled(val.productName)}
+                  >
                     <Text
                       strong
                       style={{ fontSize: "16px", marginRight: "5px" }}

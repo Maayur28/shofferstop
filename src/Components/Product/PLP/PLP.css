@@ -43,3 +43,28 @@
   min-width: 200px;
   margin: 10px 10px;
 }
+.plp_wishlist_div {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  display: none;
+  width: 45px;
+  height: 35px;
+  cursor: default;
+  text-align: right;
+}
+.plp_wishlist {
+  margin: 5px 5px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.plp_wishlisted {
+  margin: 5px 5px;
+  font-size: 20px;
+  cursor: pointer;
+  color: red;
+}
+
+.plp_product:hover .plp_wishlist_div {
+  display: block;
+}

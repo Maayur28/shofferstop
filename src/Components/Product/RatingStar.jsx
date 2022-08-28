@@ -5,7 +5,6 @@ import { StarFilled } from "@ant-design/icons";
 const { Text } = Typography;
 
 const RatingStar = ({ ratingData }) => {
-  console.log(ratingData);
   return (
     <>
       <div className="pdp_desc_rating_rating_left">
