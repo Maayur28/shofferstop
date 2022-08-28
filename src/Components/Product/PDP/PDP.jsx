@@ -3,13 +3,9 @@ import { useParams } from "react-router-dom";
 import { fetchGet, fetchPost } from "../../FetchData";
 import Cookies from "universal-cookie";
 import "react-image-gallery/styles/css/image-gallery.css";
-import { message, Typography, Divider, Button, Progress, Rate } from "antd";
+import { message, Typography, Divider, Button, Rate, Skeleton } from "antd";
 import ShowMoreText from "react-show-more-text";
-import {
-  ShoppingCartOutlined,
-  HeartOutlined,
-  StarFilled,
-} from "@ant-design/icons";
+import { ShoppingCartOutlined, HeartOutlined } from "@ant-design/icons";
 import "./PDP.css";
 import ImageGallery from "react-image-gallery";
 import SimilarProduct from "../SimilarProduct";
@@ -29,10 +25,14 @@ const PDP = () => {
   const [carouselImage, setcarouselImage] = useState([]);
   const [rateProduct, setRateProduct] = useState(false);
   const [rateValue, setrateValue] = useState();
+  const [similarProd, setSimilarProd] = useState(false);
 
   const desc = ["terrible", "bad", "satisfactory", "good", "excellent"];
 
   useEffect(() => {
+    setRatingData({});
+    setProductData({});
+    setSimilarProd(false);
     getProduct();
   }, [productId]);
 
@@ -91,12 +91,14 @@ const PDP = () => {
       const response = await fetchGet(
         `https://shofferstop-prodservice.herokuapp.com/product/${productId}`
       );
+      setSimilarProd(true);
       getRating(response.productName);
       setProductData({ ...constructProd(response) });
       setapiCalled(false);
     } catch (err) {
       message.error(err.message);
     }
+    setapiCalled(false);
   };
 
   const constructProd = (product) => {
@@ -193,138 +195,182 @@ const PDP = () => {
     <div className="pdp">
       <div className="pdp_prod">
         <div className="pdp_image">
-          {productData != null &&
-            productData.prodImage != null &&
-            productData.prodImage.length > 0 && (
-              <ImageGallery
-                items={carouselImage}
-                showFullscreenButton={false}
-                showPlayButton={false}
-                autoPlay={true}
-                slideInterval={2000}
-                showNav={false}
-                slideOnThumbnailOver={true}
-                c
-              />
-            )}
+          {!apiCalled &&
+          productData != null &&
+          productData.prodImage != null &&
+          productData.prodImage.length > 0 ? (
+            <ImageGallery
+              items={carouselImage}
+              showFullscreenButton={false}
+              showPlayButton={false}
+              autoPlay={true}
+              slideInterval={2000}
+              showNav={false}
+              slideOnThumbnailOver={true}
+              c
+            />
+          ) : (
+            <Skeleton.Input
+              active={true}
+              className="plp_product"
+              style={{ marginTop: "0px", height: "400px", width: "400px" }}
+            />
+          )}
         </div>
-        <div id="myPortal" />
-        <div className="pdp_desc">
-          <div className="pdp_desc_top">
-            <Title level={3} style={{}}>
-              {productData.prodBrand}
-            </Title>
-            <Text type="secondary" style={{ fontSize: "20px" }}>
-              {productData.productName}
-            </Text>
-            <div style={{}}>
-              <Text strong style={{ fontSize: "20px", marginRight: "5px" }}>
-                ₹{productData.discountedPrice}
+        {!apiCalled &&
+        productData != null &&
+        productData.prodImage != null &&
+        productData.prodImage.length > 0 ? (
+          <div className="pdp_desc">
+            <div className="pdp_desc_top">
+              <Title level={3} style={{}}>
+                {productData.prodBrand}
+              </Title>
+              <Text type="secondary" style={{ fontSize: "20px" }}>
+                {productData.productName}
               </Text>
-              {productData.discountedPrice !== productData.retailPrice && (
-                <>
-                  <Text
-                    delete
-                    type="secondary"
-                    style={{ fontSize: "18px", marginRight: "5px" }}
-                  >
-                    ₹{productData.retailPrice}
-                  </Text>
-                  <Text type="success" strong style={{ fontSize: "18px" }}>
-                    {Math.round(
-                      ((productData.retailPrice - productData.discountedPrice) /
-                        productData.retailPrice) *
-                        100
+              <div style={{}}>
+                <Text strong style={{ fontSize: "20px", marginRight: "5px" }}>
+                  ₹{productData.discountedPrice}
+                </Text>
+                {productData.discountedPrice !== productData.retailPrice && (
+                  <>
+                    <Text
+                      delete
+                      type="secondary"
+                      style={{ fontSize: "18px", marginRight: "5px" }}
+                    >
+                      ₹{productData.retailPrice}
+                    </Text>
+                    <Text type="success" strong style={{ fontSize: "18px" }}>
+                      {Math.round(
+                        ((productData.retailPrice -
+                          productData.discountedPrice) /
+                          productData.retailPrice) *
+                          100
+                      )}
+                      % off
+                    </Text>
+                  </>
+                )}
+              </div>
+              <div style={{ margin: "20px 0px" }}>
+                <Button
+                  type="primary"
+                  danger
+                  icon={<ShoppingCartOutlined />}
+                  size="large"
+                  shape="round"
+                  style={{ marginRight: "15px" }}
+                >
+                  Add to bag
+                </Button>
+                <Button
+                  danger
+                  icon={<HeartOutlined />}
+                  size="large"
+                  shape="round"
+                >
+                  Wishlist
+                </Button>
+              </div>
+            </div>
+            <Divider />
+            <div className="pdp_desc_bottom">
+              <Title level={4} style={{ textAlign: "left" }}>
+                Product Description
+              </Title>
+              <ShowMoreText
+                lines={3}
+                more="Show more"
+                less="Show less"
+                className="content-css"
+                expanded={false}
+                truncatedEndingComponent={"... "}
+              >
+                {productData.prodDescription}
+              </ShowMoreText>
+            </div>
+            <Divider />
+            <div className="pdp_desc_rating">
+              <div className="pdp_desc_rating_heading">
+                <Title level={4} style={{ textAlign: "left" }}>
+                  Rating
+                </Title>
+                <Button onClick={rateProductCalled}>Rate Product</Button>
+              </div>
+              {!rateProduct ? (
+                <div className="pdp_desc_rating_rating">
+                  <RatingStar ratingData={ratingData} />
+                </div>
+              ) : isLogin ? (
+                <div className="rating_rate">
+                  <Title level={5}>You rated:</Title>
+                  <span>
+                    <Rate
+                      disabled={apiCalled}
+                      tooltips={desc}
+                      onChange={rateCalled}
+                      value={rateValue}
+                    />
+                    {rateValue ? (
+                      <span className="ant-rate-text">
+                        {desc[rateValue - 1]}
+                      </span>
+                    ) : (
+                      ""
                     )}
-                    % off
-                  </Text>
-                </>
+                  </span>
+                </div>
+              ) : (
+                <div className="rating_rate">
+                  <Title level={5}>Please login to rate</Title>
+                </div>
               )}
             </div>
-            <div style={{ margin: "20px 0px" }}>
-              <Button
-                type="primary"
-                danger
-                icon={<ShoppingCartOutlined />}
-                size="large"
-                shape="round"
-                style={{ marginRight: "15px" }}
-              >
-                Add to bag
-              </Button>
-              <Button
-                danger
-                icon={<HeartOutlined />}
-                size="large"
-                shape="round"
-              >
-                Wishlist
-              </Button>
-            </div>
           </div>
-          <Divider />
-          <div className="pdp_desc_bottom">
-            <Title level={4} style={{ textAlign: "left" }}>
-              Product Description
-            </Title>
-            <ShowMoreText
-              lines={3}
-              more="Show more"
-              less="Show less"
-              className="content-css"
-              expanded={false}
-              truncatedEndingComponent={"... "}
-            >
-              {productData.prodDescription}
-            </ShowMoreText>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "30px",
+              marginLeft: "20px",
+            }}
+          >
+            <Skeleton.Input
+              active={true}
+              style={{ marginTop: "0px", height: "50px", width: "400px" }}
+            />
+            <Skeleton.Input
+              active={true}
+              style={{ marginTop: "10px", height: "50px", width: "400px" }}
+            />
+            <Skeleton.Input
+              active={true}
+              style={{ marginTop: "10px", height: "150px", width: "400px" }}
+            />
+            <Skeleton.Input
+              active={true}
+              style={{ marginTop: "10px", height: "200px", width: "400px" }}
+            />
           </div>
-          <Divider />
-          <div className="pdp_desc_rating">
-            <div className="pdp_desc_rating_heading">
-              <Title level={4} style={{ textAlign: "left" }}>
-                Rating
-              </Title>
-              <Button onClick={rateProductCalled}>Rate Product</Button>
-            </div>
-            {!rateProduct ? (
-              <div className="pdp_desc_rating_rating">
-                <RatingStar ratingData={ratingData} />
-              </div>
-            ) : isLogin ? (
-              <div className="rating_rate">
-                <Title level={5}>You rated:</Title>
-                <span>
-                  <Rate
-                    disabled={apiCalled}
-                    tooltips={desc}
-                    onChange={rateCalled}
-                    value={rateValue}
-                  />
-                  {rateValue ? (
-                    <span className="ant-rate-text">{desc[rateValue - 1]}</span>
-                  ) : (
-                    ""
-                  )}
-                </span>
-              </div>
-            ) : (
-              <div className="rating_rate">
-                <Title level={5}>Please login to rate</Title>
-              </div>
-            )}
-          </div>
-        </div>
+        )}
       </div>
       <Divider />
-      <Title level={3} style={{ textAlign: "left" }}>
-        Similar Products
-      </Title>
-      <div className="pdp_simi_product">
-        <SimilarProduct
-          categoryId={productData.productCategory}
-          productName={productData.productName}
-        />
-      </div>
+      {similarProd && (
+        <div>
+          <Title level={3} style={{ textAlign: "left" }}>
+            Similar Products
+          </Title>
+          <div className="pdp_simi_product">
+            <SimilarProduct
+              categoryId={productData.productCategory}
+              productName={productData.productName}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -101,8 +101,6 @@ const PLP = () => {
     }
   }, [brandValue]);
 
-  const convertToString = (brandValue) => {};
-
   const getProduct = async (page, pageSize, sortBy = "", filter = {}) => {
     setapiCalled(true);
     setProducts([]);
