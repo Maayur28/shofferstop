@@ -1,8 +1,12 @@
+.menu_slider {
+  width: 98vw;
+}
 .react-multi-carousel-track {
   padding: 10px 0px;
   align-items: center;
 }
 .carousel-container {
+  width: 98vw !important;
   padding: 10px 0px;
   height: 50px;
 }

@@ -60,7 +60,7 @@ const AtProd = ({ prod, title, pdpCalled }) => {
         easing="linear"
       >
         {prod.length > 0 ? (
-          prod.map((val, index) => (
+          prod.map((val) => (
             <Card
               key={val.id}
               hoverable
