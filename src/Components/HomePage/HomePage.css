@@ -1,0 +1,24 @@
+.homePage {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  padding-right: 16px !important;
+}
+.site-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100vw !important;
+}
+.slick-prev {
+  left: 2% !important;
+  z-index: 1;
+}
+.slick-next {
+  right: 4% !important;
+  z-index: 1;
+}
+.slick-prev:before,
+.slick-next:before {
+  font-size: 30px !important;
+  color: #1890ff !important;
+}

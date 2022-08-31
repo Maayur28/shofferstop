@@ -19,6 +19,8 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
     "react-show-more-text": "^1.5.2",
+    "react-simply-carousel": "^8.3.5",
+    "react-slick": "^0.29.0",
     "universal-cookie": "^4.0.4",
     "web-vitals": "^2.1.4"
   },
