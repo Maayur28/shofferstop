@@ -161,6 +161,13 @@ const SimilarProduct = ({ categoryId, productName }) => {
                   </>
                 )}
               </div>
+              <div style={{ textAlign: "left" }}>
+                {val.promotionMessage != null && (
+                  <Text type="success" strong style={{ fontSize: "14px" }}>
+                    Offer: {val.promotionMessage}
+                  </Text>
+                )}
+              </div>
             </Card>
           ))
         ) : (
