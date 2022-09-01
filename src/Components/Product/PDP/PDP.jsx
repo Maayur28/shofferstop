@@ -314,9 +314,11 @@ const PDP = () => {
                   </>
                 )}
               </div>
-              <Text type="success" strong style={{ fontSize: "14px" }}>
-                Offer: {productData.promotionMessage}
-              </Text>
+              {productData.promotionMessage != null && (
+                <Text type="success" strong style={{ fontSize: "14px" }}>
+                  Offer: {productData.promotionMessage}
+                </Text>
+              )}
               <div style={{ margin: "20px 0px" }}>
                 <Button
                   type="primary"
