@@ -21,6 +21,7 @@ const Account = () => {
   const [accountData, setaccountData] = useState({});
   const [apifetch, setapifetch] = useState(false);
   const [selectedKey, setselectedKey] = useState("1");
+  const [defaultAddress, setDefaultAddress] = useState({});
   const cookies = new Cookies();
 
   useEffect(() => {
@@ -120,7 +121,12 @@ const Account = () => {
                   />
                 ) : null}
                 {selectedKey === "2" ? (
-                  <ProfileAddress isLogin={isLogin} setisLogin={setisLogin} />
+                  <ProfileAddress
+                    isLogin={isLogin}
+                    setisLogin={setisLogin}
+                    defaultAddress={defaultAddress}
+                    setDefaultAddress={setDefaultAddress}
+                  />
                 ) : null}
               </>
             ) : (

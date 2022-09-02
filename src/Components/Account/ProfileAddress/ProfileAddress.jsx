@@ -27,7 +27,12 @@ import Cookies from "universal-cookie";
 import AddressCard from "./AddressCard";
 import deleteAllCookies from "../../Util";
 
-const ProfileAddress = ({ isLogin, setisLogin }) => {
+const ProfileAddress = ({
+  isLogin,
+  setisLogin,
+  defaultAddress,
+  setDefaultAddress,
+}) => {
   const cookies = new Cookies();
   const { Option } = Select;
   const { Search } = Input;
@@ -67,6 +72,11 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
     );
     setpagination(response.pagination);
     setTotal(response.total);
+    response.addresses.forEach((val) => {
+      if (val.defaultAddress === 1) {
+        setDefaultAddress(val);
+      }
+    });
     setAddress(response.addresses);
     setapiCalled(false);
   };
@@ -83,6 +93,11 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
     );
     setpagination(response.pagination);
     setTotal(response.total);
+    response.addresses.forEach((val) => {
+      if (val.defaultAddress === 1) {
+        setDefaultAddress(val);
+      }
+    });
     setAddress(response.addresses);
     setapiCalled(false);
   };
@@ -100,6 +115,11 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
     message.success("Address has been deleted", 2);
     setpagination(response.pagination);
     setTotal(response.total);
+    response.addresses.forEach((val) => {
+      if (val.defaultAddress === 1) {
+        setDefaultAddress(val);
+      }
+    });
     setAddress(response.addresses);
     setapiCalled(false);
   };
@@ -133,6 +153,11 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
     }
     setpagination(response.pagination);
     setTotal(response.total);
+    response.addresses.forEach((val) => {
+      if (val.defaultAddress === 1) {
+        setDefaultAddress(val);
+      }
+    });
     setAddress(response.addresses);
     setaddressAddMode(false);
     setaddressEditMode(false);
@@ -448,7 +473,19 @@ const ProfileAddress = ({ isLogin, setisLogin }) => {
           </Form>
         </>
       )}
-      {apiCalled && <Spin tip="Loading..." />}
+      {apiCalled && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "550px",
+            height: "200px",
+          }}
+        >
+          <Spin tip="Loading..." />
+        </div>
+      )}
     </div>
   );
 };

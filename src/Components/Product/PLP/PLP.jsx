@@ -302,7 +302,7 @@ const PLP = () => {
             onChange={handleSortByChange}
             style={{
               float: "right",
-              width: 180,
+              width: 220,
             }}
           >
             {sortByOptions}

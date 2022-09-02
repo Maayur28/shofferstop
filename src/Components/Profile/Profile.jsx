@@ -21,7 +21,6 @@ const Profile = ({
   setisLogin,
   cartCount,
 }) => {
-  console.log(cartCount);
   const [loginModalVisible, setloginModalVisible] = useState(false);
   const handleMenuClick = (e) => {
     if (e.key === "2" && e.domEvent.target.innerText !== "Logout") {
@@ -106,7 +105,7 @@ const Profile = ({
             </Space>
           </span>
         </Dropdown>
-        <Link to="#">
+        <Link to="/cart">
           <Badge
             count={cartCount}
             size="small"

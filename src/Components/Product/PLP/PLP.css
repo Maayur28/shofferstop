@@ -28,11 +28,16 @@
   flex-direction: column;
 }
 .sortBy_selectDiv {
+  position: relative;
   display: flex;
   justify-content: flex-end;
 }
 .sortBy_selectDiv_text {
   margin-top: 5px;
+  font-weight: bolder;
+  position: absolute;
+  left: 5%;
+  z-index: 1;
 }
 .plp_left_filters {
   display: flex;
