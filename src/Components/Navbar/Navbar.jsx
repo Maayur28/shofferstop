@@ -5,7 +5,7 @@ import Search from "./../Search/Search";
 import Profile from "../Profile/Profile";
 import { StoreContext } from "../../Store/data";
 const Navbar = () => {
-  const { isLogin, firstName, setfirstName, setisLogin } =
+  const { isLogin, firstName, setfirstName, setisLogin, cartCount } =
     useContext(StoreContext);
   return (
     <div className="navbar">
@@ -22,6 +22,7 @@ const Navbar = () => {
             firstName={firstName}
             setfirstName={setfirstName}
             setisLogin={setisLogin}
+            cartCount={cartCount}
           />
         }
       </div>

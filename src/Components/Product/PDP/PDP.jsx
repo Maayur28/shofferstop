@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchGet, fetchPost } from "../../FetchData";
 import Cookies from "universal-cookie";
 import "react-image-gallery/styles/css/image-gallery.css";
@@ -21,7 +21,9 @@ import axios from "axios";
 const { Title, Text } = Typography;
 
 const PDP = () => {
-  const { isLogin, setisLogin } = useContext(StoreContext);
+  const { isLogin, setisLogin, setCartCount, userId } =
+    useContext(StoreContext);
+  let navigate = useNavigate();
   const { productId } = useParams();
   const cookies = new Cookies();
   const [apiCalled, setapiCalled] = useState(false);
@@ -32,10 +34,12 @@ const PDP = () => {
   const [rateValue, setrateValue] = useState();
   const [similarProd, setSimilarProd] = useState(false);
   const [wishlisted, setwishlisted] = useState(false);
+  const [presentInBag, setPresentInBag] = useState(false);
 
   const desc = ["terrible", "bad", "satisfactory", "good", "excellent"];
 
   useEffect(() => {
+    setPresentInBag(false);
     setRatingData({});
     setProductData({});
     setwishlisted(false);
@@ -45,6 +49,7 @@ const PDP = () => {
 
   useEffect(() => {
     setRateProduct(false);
+    setPresentInBag(false);
     if (isLogin === false) {
       setrateValue(0);
       setwishlisted(false);
@@ -60,26 +65,7 @@ const PDP = () => {
   const getRating = async (productName) => {
     setapiCalled(true);
     if (isLogin && productName != null) {
-      const options = {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${cookies.get("accessToken")}`,
-        },
-      };
-      fetch("https://shofferstop-userservice.herokuapp.com/users", options)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data != null) {
-            getRatingCalled(data.userId, productName);
-          } else {
-            deleteAllCookies();
-            setisLogin(false);
-          }
-        })
-        .catch(() => {
-          deleteAllCookies();
-          setisLogin(false);
-        });
+      getRatingCalled(userId, productName);
     } else {
       deleteAllCookies();
       setisLogin(false);
@@ -113,8 +99,12 @@ const PDP = () => {
     setapiCalled(true);
     try {
       const response = await fetchGet(
-        `https://shofferstop-prodservice.herokuapp.com/product/${productId}`
+        `https://shofferstop-prodservice.herokuapp.com/product/${productId}?` +
+          new URLSearchParams({
+            userId: userId,
+          })
       );
+      setPresentInBag(response.presentInBag);
       setSimilarProd(true);
       getWishlistCalled(response.productName);
       getRating(response.productName);
@@ -181,26 +171,7 @@ const PDP = () => {
     setrateValue(value);
     setapiCalled(true);
     if (isLogin && value >= 1 && value <= 5) {
-      const options = {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${cookies.get("accessToken")}`,
-        },
-      };
-      fetch("https://shofferstop-userservice.herokuapp.com/users", options)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data != null) {
-            postRatingCalled(data.userId, value);
-          } else {
-            deleteAllCookies();
-            setisLogin(false);
-          }
-        })
-        .catch(() => {
-          deleteAllCookies();
-          setisLogin(false);
-        });
+      postRatingCalled(userId, value);
     } else {
       deleteAllCookies();
       setisLogin(false);
@@ -251,6 +222,40 @@ const PDP = () => {
     }
   };
 
+  const getUserAddToCart = async () => {
+    if (presentInBag) {
+      navigate("/cart");
+    } else {
+      setapiCalled(true);
+      if (isLogin) {
+        addToCart(userId);
+        setPresentInBag(true);
+        message.success("Added to bag");
+      } else {
+        deleteAllCookies();
+        setisLogin(false);
+        message.error("Please login to continue!!!");
+      }
+      setapiCalled(false);
+    }
+  };
+
+  const addToCart = async (userId) => {
+    let values = {};
+    values.productName = productData.productName;
+    values.retailPrice = productData.retailPrice;
+    values.discountedPrice = productData.discountedPrice;
+    values.productImage = productData.prodImage[0];
+    values.productBrand = productData.prodBrand;
+    values.quantity = 1;
+    const response = await fetchPost(
+      `https://shofferstop-prodservice.herokuapp.com/cart/${userId}`,
+      values,
+      ""
+    );
+    setCartCount(response);
+  };
+
   return (
     <div className="pdp">
       <div className="pdp_prod">
@@ -267,7 +272,6 @@ const PDP = () => {
               slideInterval={2000}
               showNav={false}
               slideOnThumbnailOver={true}
-              c
             />
           ) : (
             <Skeleton.Input
@@ -327,8 +331,9 @@ const PDP = () => {
                   size="large"
                   shape="round"
                   style={{ marginRight: "15px" }}
+                  onClick={getUserAddToCart}
                 >
-                  Add to bag
+                  {presentInBag ? "Go to Bag" : "Add to bag"}
                 </Button>
                 <Button
                   danger

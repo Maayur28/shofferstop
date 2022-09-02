@@ -1,6 +1,7 @@
 import React, { useState, createContext, useEffect } from "react";
 import Cookies from "universal-cookie";
 import deleteAllCookies from "../Components/Util";
+import { fetchGet } from "../Components/FetchData";
 
 export const StoreContext = createContext({});
 const cookies = new Cookies();
@@ -12,10 +13,26 @@ export const StoreProvider = (props) => {
       ? true
       : false
   );
+  const [cartCount, setCartCount] = useState(0);
   const [firstName, setfirstName] = useState(cookies.get("firstName"));
   const [windowSize, setWindowSize] = useState(getWindowSize());
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
+    let promo = JSON.parse(localStorage.getItem("homePage"));
+    const current = new Date();
+    const date = `${
+      current.getFullYear() < 10
+        ? `0${current.getFullYear()}`
+        : current.getFullYear()
+    }-${
+      current.getMonth() + 1 < 10
+        ? `0${current.getMonth() + 1}`
+        : current.getMonth() + 1
+    }-${current.getDate() < 10 ? `0${current.getDate()}` : current.getDate()}`;
+    if (promo === null || date !== promo.date) {
+      localStorage.removeItem("homePage");
+    }
     function handleWindowResize() {
       setWindowSize(getWindowSize());
     }
@@ -37,6 +54,7 @@ export const StoreProvider = (props) => {
         .then((response) => response.json())
         .then((data) => {
           if (data != null) {
+            setUserId(data.userId);
             setfirstName(cookies.get("firstName"));
             setisLogin(true);
           } else {
@@ -54,6 +72,20 @@ export const StoreProvider = (props) => {
     }
   }, [isLogin]);
 
+  useEffect(() => {
+    if (userId != null && userId !== undefined) {
+      getUserId();
+    }
+  }, [userId]);
+
+  const getUserId = async () => {
+    const response = await fetchGet(
+      "https://shofferstop-prodservice.herokuapp.com/cart/count/userId",
+      ""
+    );
+    setCartCount(response);
+  };
+
   function getWindowSize() {
     const { innerWidth, innerHeight } = window;
     return { innerWidth, innerHeight };
@@ -66,6 +98,10 @@ export const StoreProvider = (props) => {
         window: windowSize,
         firstName: firstName,
         setfirstName: setfirstName,
+        cartCount: cartCount,
+        setCartCount: setCartCount,
+        userId: userId,
+        setUserId: setUserId,
       }}
     >
       {props.children}

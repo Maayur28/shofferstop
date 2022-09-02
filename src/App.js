@@ -10,6 +10,7 @@ import Account from "./Components/Account/Account";
 import NotFound from "./Components/NotFound";
 import PLP from "./Components/Product/PLP/PLP";
 import PDP from "./Components/Product/PDP/PDP";
+import Cart from "./Components/Cart/Cart";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route exact path="/category/:categoryId" element={<PLP />} />
           <Route exact path="/search/:searchId" element={<PLP />} />
           <Route exact path="/:productId" element={<PDP />} />
+          <Route exact path="/cart" element={<Cart />} />
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </div>

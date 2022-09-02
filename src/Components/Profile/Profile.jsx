@@ -14,7 +14,14 @@ import deleteAllCookies from "../Util";
 
 const { Title } = Typography;
 
-const Profile = ({ isLogin, firstName, setfirstName, setisLogin }) => {
+const Profile = ({
+  isLogin,
+  firstName,
+  setfirstName,
+  setisLogin,
+  cartCount,
+}) => {
+  console.log(cartCount);
   const [loginModalVisible, setloginModalVisible] = useState(false);
   const handleMenuClick = (e) => {
     if (e.key === "2" && e.domEvent.target.innerText !== "Logout") {
@@ -100,7 +107,12 @@ const Profile = ({ isLogin, firstName, setfirstName, setisLogin }) => {
           </span>
         </Dropdown>
         <Link to="#">
-          <Badge count={5} size="small" style={{ margin: "0px 20px" }}>
+          <Badge
+            count={cartCount}
+            size="small"
+            style={{ margin: "0px 20px" }}
+            showZero
+          >
             <ShoppingCartOutlined
               style={{ fontSize: 20, margin: "0px 20px" }}
             />
