@@ -38,7 +38,7 @@ const SimilarProduct = ({ categoryId, productName }) => {
   }, [categoryId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pdpCalled = (name) => {
-    navigate(`/${name}`);
+    navigate(`/product/${name}`);
   };
 
   const getProduct = async () => {

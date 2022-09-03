@@ -78,7 +78,7 @@ const HomePage = () => {
   };
 
   const pdpCalled = (name) => {
-    navigate(`/${name}`);
+    navigate(`/product/${name}`);
   };
 
   return (

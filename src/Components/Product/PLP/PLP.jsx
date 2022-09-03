@@ -63,7 +63,7 @@ const PLP = () => {
   };
 
   const pdpCalled = (name) => {
-    navigate(`/${name}`);
+    navigate(`/product/${name}`);
   };
 
   useEffect(() => {

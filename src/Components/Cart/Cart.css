@@ -72,3 +72,10 @@
   position: relative;
   margin-left: 20px;
 }
+.orderConfirmed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 98vw;
+  height: 78vh;
+}
