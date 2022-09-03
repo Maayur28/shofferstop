@@ -47,7 +47,7 @@ const Cart = () => {
       deleteAllCookies();
       setisLogin(false);
     }
-  }, [isLogin, userId]);
+  }, [isLogin, userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getCart = async () => {
     setapiCalled(true);
