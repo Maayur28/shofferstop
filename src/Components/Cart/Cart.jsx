@@ -88,7 +88,7 @@ const Cart = () => {
         values.productName = productName;
         values.productQuantity = value;
         const response = await fetchPut(
-          `http://shofferstop-prodservice.herokuapp.com/cart/${userId}`,
+          `https://shofferstop-prodservice.herokuapp.com/cart/${userId}`,
           values
         );
         setCartData({ ...response });
