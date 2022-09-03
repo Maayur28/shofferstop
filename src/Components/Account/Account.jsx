@@ -15,6 +15,7 @@ import Cookies from "universal-cookie";
 import ProfileInformation from "./ProfileInformation/ProfileInformation";
 import ProfileAddress from "./ProfileAddress/ProfileAddress";
 import { fetchGet } from "./../FetchData";
+import Orders from "./../Orders/Orders";
 const { Title } = Typography;
 const Account = () => {
   const { isLogin, setisLogin } = useContext(StoreContext);
@@ -128,6 +129,7 @@ const Account = () => {
                     setDefaultAddress={setDefaultAddress}
                   />
                 ) : null}
+                {selectedKey === "4" ? <Orders accountCall={true} /> : null}
               </>
             ) : (
               <Spin tip="Loading..." />

@@ -45,7 +45,7 @@ const Search = () => {
       >
         <Input.Search
           size="medium"
-          placeholder="Search here..."
+          placeholder="Search for products, brands and more"
           enterButton
           onSearch={(value) => handleSearch(value)}
         />

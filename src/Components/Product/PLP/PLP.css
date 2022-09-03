@@ -27,10 +27,13 @@
   display: flex;
   flex-direction: column;
 }
-.sortBy_selectDiv {
+#sortBy_selectDiv {
   position: relative;
   display: flex;
   justify-content: flex-end;
+}
+#sortBy_selectDiv .ant-select-selection-item {
+  text-align: right;
 }
 .sortBy_selectDiv_text {
   margin-top: 5px;

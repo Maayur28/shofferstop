@@ -268,7 +268,7 @@ const Cart = () => {
                                             src={productData.productImage}
                                           />
                                         </div>
-                                        <div className="qty_selectDiv">
+                                        <div id="qty_selectDiv">
                                           <span className="qty_selectDiv_text">
                                             Qty:&nbsp;
                                           </span>

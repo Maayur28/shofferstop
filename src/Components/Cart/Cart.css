@@ -42,7 +42,7 @@
   cursor: pointer;
   color: #bdbdbd;
 }
-.qty_selectDiv {
+#qty_selectDiv {
   position: relative;
   display: flex;
   justify-content: flex-start;
@@ -60,7 +60,7 @@
   font-weight: bolder;
   left: 5%;
 }
-.ant-select-selection-item {
+#qty_selectDiv .ant-select-selection-item {
   text-align: right;
 }
 .cart_address {

@@ -295,7 +295,7 @@ const PLP = () => {
               : null}
           </Title>
         </div>
-        <div className="sortBy_selectDiv">
+        <div id="sortBy_selectDiv">
           <span className="sortBy_selectDiv_text">Sort By :&nbsp;</span>
           <Select
             defaultValue="Popularity"

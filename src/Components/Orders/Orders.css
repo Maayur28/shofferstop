@@ -1,0 +1,36 @@
+.orders {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.orderItemheading {
+  display: flex;
+}
+.order_card {
+  width: 90vw;
+  max-width: 800px;
+  min-width: 300px;
+  margin: 20px 20px;
+}
+.order_account {
+  width: calc(100vw - 250px);
+  max-width: 550px;
+  margin: 20px 20px;
+}
+.order_search {
+  width: 90vw;
+  max-width: 800px;
+  min-width: 300px;
+}
+.order_cardBody {
+  display: flex;
+  cursor: pointer;
+}
+.order_product_detail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.order_product_image {
+  margin-right: 50px;
+}
