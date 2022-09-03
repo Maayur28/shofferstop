@@ -266,6 +266,7 @@ const Cart = () => {
                                             width={120}
                                             height={120}
                                             src={productData.productImage}
+                                            fallback="/image_not_available.png"
                                           />
                                         </div>
                                         <div id="qty_selectDiv">
@@ -399,6 +400,7 @@ const Cart = () => {
                                                       productData.productImage
                                                     }
                                                     preview={false}
+                                                    fallback="/image_not_available.png"
                                                   />
                                                 </div>
                                                 <div className="cart_product_detail">

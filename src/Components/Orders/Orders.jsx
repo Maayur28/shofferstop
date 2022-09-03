@@ -94,6 +94,7 @@ const Orders = ({ accountCall = false }) => {
                                     height={80}
                                     src={value.productImage}
                                     preview={false}
+                                    fallback="/image_not_available.png"
                                   />
                                 </div>
                                 <div className="order_product_detail">
@@ -130,6 +131,7 @@ const Orders = ({ accountCall = false }) => {
                                     height={80}
                                     src={value.productImage}
                                     preview={false}
+                                    fallback="/image_not_available.png"
                                   />
                                 </div>
                                 <div className="order_product_detail">

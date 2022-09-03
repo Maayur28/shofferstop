@@ -46,6 +46,7 @@ const OrderSummary = ({ defaultAddress, cartData }) => {
                     height={120}
                     src={productData.productImage}
                     preview={false}
+                    fallback="/image_not_available.png"
                   />
                 </div>
                 <div>
@@ -125,6 +126,7 @@ const OrderSummary = ({ defaultAddress, cartData }) => {
                           height={120}
                           src={productData.productImage}
                           preview={false}
+                          fallback="/image_not_available.png"
                         />
                       </div>
                       <div className="cart_product_detail">
