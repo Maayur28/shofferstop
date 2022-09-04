@@ -196,16 +196,16 @@ const PLP = () => {
       setTotal(response.total);
       setBrand([...response.brands]);
       setProducts(constructProd(response.products));
-      setapiCalled(false);
     } catch (err) {
+      setapiCalled(false);
       message.error(err.message);
     }
   };
 
   const getSearchProduct = async (page, pageSize, sortBy = "", filter = {}) => {
-    setapiCalled(true);
     setProducts([]);
     try {
+      setapiCalled(true);
       const response = await fetchGet(
         `https://shofferstop-prodservice.herokuapp.com/product/search/${searchId}?` +
           new URLSearchParams({
@@ -219,11 +219,15 @@ const PLP = () => {
       setTotal(response.total);
       setBrand([...response.brands]);
       setProducts(constructProd(response.products));
-      setapiCalled(false);
     } catch (err) {
+      setapiCalled(false);
       message.error(err.message);
     }
   };
+
+  useEffect(() => {
+    if (products.length > 0) setapiCalled(false);
+  }, [products]);
 
   const constructProd = (products) => {
     let minPrice = Math.min(),
