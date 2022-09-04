@@ -51,7 +51,7 @@ const OrderId = () => {
     <>
       {!apiCalled ? (
         <>
-          {Object.keys(orders).length < 0 ? (
+          {Object.keys(orders).length > 0 ? (
             <div className="orderId">
               <div className="orderId_address">
                 <div style={{ display: "flex", flexDirection: "column" }}>
