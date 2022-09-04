@@ -41,17 +41,9 @@ const Profile = ({
           disabled: !isLogin,
         },
         {
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.aliyun.com"
-            >
-              Wishlist
-            </a>
-          ),
-          disabled: !isLogin,
+          label: <Link to="/order">My Orders</Link>,
           key: "1",
+          disabled: !isLogin,
         },
         {
           type: "divider",

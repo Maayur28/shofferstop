@@ -18,7 +18,6 @@ import {
 const { Title, Text } = Typography;
 
 const OrderSummary = ({ defaultAddress, cartData }) => {
-  console.log(defaultAddress, cartData);
   return (
     <div className="cart_orderSummary">
       <Title style={{ textAlign: "left" }} level={4}>

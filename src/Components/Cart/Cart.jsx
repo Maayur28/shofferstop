@@ -167,7 +167,7 @@ const Cart = () => {
               <Button type="primary" key="home" onClick={() => navigate("/")}>
                 Buy More
               </Button>,
-              <Button key="orders" onClick={() => navigate("/orders")}>
+              <Button key="orders" onClick={() => navigate("/order")}>
                 View Orders
               </Button>,
             ]}

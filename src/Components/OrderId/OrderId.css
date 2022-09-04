@@ -1,0 +1,20 @@
+.orderId {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 98vw;
+}
+.orderId_address {
+  width: 90vw;
+  max-width: 800px;
+  min-width: 300px;
+  margin: 20px 20px;
+}
+.orderId_status_div {
+  width: 90vw;
+  max-width: 800px;
+  min-width: 300px;
+  margin: 20px 20px;
+  height: 150px;
+}
