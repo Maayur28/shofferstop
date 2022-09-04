@@ -16,13 +16,18 @@ import ProfileInformation from "./ProfileInformation/ProfileInformation";
 import ProfileAddress from "./ProfileAddress/ProfileAddress";
 import { fetchGet } from "./../FetchData";
 import Orders from "./../Orders/Orders";
+import Wishlist from "./../Wishlist/Wishlist";
 const { Title } = Typography;
 const Account = () => {
   let navigate = useNavigate();
   const { isLogin, setisLogin } = useContext(StoreContext);
   const [accountData, setaccountData] = useState({});
   const [apifetch, setapifetch] = useState(false);
-  const [selectedKey, setselectedKey] = useState("1");
+  const [selectedKey, setselectedKey] = useState(
+    localStorage.getItem("accountMenuSelected") === undefined
+      ? "1"
+      : localStorage.getItem("accountMenuSelected")
+  );
   const [defaultAddress, setDefaultAddress] = useState({});
   const cookies = new Cookies();
 
@@ -143,6 +148,7 @@ const Account = () => {
                     setDefaultAddress={setDefaultAddress}
                   />
                 ) : null}
+                {selectedKey === "3" ? <Wishlist accountCall={true} /> : null}
                 {selectedKey === "4" ? <Orders accountCall={true} /> : null}
               </>
             ) : (

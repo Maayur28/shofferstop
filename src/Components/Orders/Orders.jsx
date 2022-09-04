@@ -58,7 +58,7 @@ const Orders = ({ accountCall = false }) => {
     <>
       {isLogin ? (
         <>
-          <Title type={5}>Your Orders</Title>
+          <Title style={{ color: "red", fontSize: "20px" }}>Your Orders</Title>
           {!apiCalled ? (
             <div className="orders">
               <div>
