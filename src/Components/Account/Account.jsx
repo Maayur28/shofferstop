@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { Menu, Card, Typography, message, Result, Spin } from "antd";
 import "./Account.css";
 import deleteAllCookies from "../Util";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   BookOutlined,
   UserOutlined,
@@ -18,6 +18,7 @@ import { fetchGet } from "./../FetchData";
 import Orders from "./../Orders/Orders";
 const { Title } = Typography;
 const Account = () => {
+  let navigate = useNavigate();
   const { isLogin, setisLogin } = useContext(StoreContext);
   const [accountData, setaccountData] = useState({});
   const [apifetch, setapifetch] = useState(false);
@@ -30,7 +31,11 @@ const Account = () => {
   }, [selectedKey]);
 
   useEffect(() => {
-    if (isLogin) {
+    if (
+      isLogin &&
+      cookies.get("accessToken") !== undefined &&
+      cookies.get("accessToken") != null
+    ) {
       getAccount();
     } else {
       deleteAllCookies();
@@ -68,6 +73,14 @@ const Account = () => {
     getItem("My Orders", "4", <FileDoneOutlined />),
     getItem("Logout", "5", <LogoutOutlined />),
   ];
+
+  const logoutCalled = () => {
+    setisLogin(false);
+    deleteAllCookies();
+    navigate("/");
+    message.info("Logout Successful");
+  };
+
   return (
     <div className="account">
       <div className="account_sidenav">
@@ -130,6 +143,7 @@ const Account = () => {
                   />
                 ) : null}
                 {selectedKey === "4" ? <Orders accountCall={true} /> : null}
+                {selectedKey === "5" ? logoutCalled() : null}
               </>
             ) : (
               <Spin tip="Loading..." />

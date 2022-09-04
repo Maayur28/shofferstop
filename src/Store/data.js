@@ -73,14 +73,18 @@ export const StoreProvider = (props) => {
   }, [isLogin]);
 
   useEffect(() => {
-    if (userId != null && userId !== undefined) {
-      getUserId();
+    if (isLogin) {
+      if (userId != null && userId !== undefined) getUserId();
+    } else {
+      setCartCount(0);
+      deleteAllCookies();
+      setisLogin(false);
     }
-  }, [userId]);
+  }, [isLogin, userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getUserId = async () => {
     const response = await fetchGet(
-      "https://shofferstop-prodservice.herokuapp.com/cart/count/userId",
+      `https://shofferstop-prodservice.herokuapp.com/cart/count/${userId}`,
       ""
     );
     setCartCount(response);

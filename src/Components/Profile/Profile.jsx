@@ -41,7 +41,7 @@ const Profile = ({
           disabled: !isLogin,
         },
         {
-          label: <Link to="/order">My Orders</Link>,
+          label: <Link to="/order">Orders</Link>,
           key: "1",
           disabled: !isLogin,
         },
