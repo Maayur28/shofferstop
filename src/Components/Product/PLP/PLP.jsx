@@ -452,13 +452,60 @@ const PLP = () => {
                   </Card>
                 ))
               ) : (
-                <div className="plp_not_found">
-                  <Result
-                    status="404"
-                    title={`You searched for ${searchId}`}
-                    subTitle="Sorry, no search results found!"
-                  />
-                </div>
+                <>
+                  {searchId !== undefined ? (
+                    <div className="plp_not_found">
+                      <Result
+                        status="404"
+                        title={`You searched for ${searchId}`}
+                        subTitle="Sorry, no search results found!"
+                      />
+                    </div>
+                  ) : (
+                    <div style={{ display: "flex", flexWrap: "wrap" }}>
+                      <Skeleton.Input
+                        active={true}
+                        className="plp_product"
+                        style={{ marginTop: "0px", height: "200px" }}
+                      />
+                      <Skeleton.Input
+                        active={true}
+                        className="plp_product"
+                        style={{ marginTop: "0px", height: "200px" }}
+                      />
+                      <Skeleton.Input
+                        active={true}
+                        className="plp_product"
+                        style={{ marginTop: "0px", height: "200px" }}
+                      />
+                      <Skeleton.Input
+                        active={true}
+                        className="plp_product"
+                        style={{ marginTop: "0px", height: "200px" }}
+                      />
+                      <Skeleton.Input
+                        active={true}
+                        className="plp_product"
+                        style={{ marginTop: "0px", height: "200px" }}
+                      />
+                      <Skeleton.Input
+                        active={true}
+                        className="plp_product"
+                        style={{ marginTop: "0px", height: "200px" }}
+                      />
+                      <Skeleton.Input
+                        active={true}
+                        className="plp_product"
+                        style={{ marginTop: "0px", height: "200px" }}
+                      />
+                      <Skeleton.Input
+                        active={true}
+                        className="plp_product"
+                        style={{ marginTop: "0px", height: "200px" }}
+                      />
+                    </div>
+                  )}
+                </>
               )
             ) : (
               <div style={{ display: "flex", flexWrap: "wrap" }}>
