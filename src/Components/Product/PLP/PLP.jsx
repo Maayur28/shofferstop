@@ -29,7 +29,11 @@ const PLP = () => {
   const { isLogin, setisLogin } = useContext(StoreContext);
   const cookies = new Cookies();
   let navigate = useNavigate();
-  const { categoryId, searchId } = useParams();
+  const { categoryId, searchId } = useParams(
+    localStorage.getItem("category") === undefined
+      ? ""
+      : localStorage.getItem("category")
+  );
   const [apiCalled, setapiCalled] = useState(false);
   const [products, setProducts] = useState([]);
   const [wishlistData, setWishlistData] = useState([]);
