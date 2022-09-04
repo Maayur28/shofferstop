@@ -261,6 +261,7 @@ const ProfileAddress = ({
               </Badge.Ribbon>
             ) : (
               <AddressCard
+                key={index + "address"}
                 val={val}
                 setAsDefault={setAsDefault}
                 setaddressEditMode={() => setEditDataCalled(val)}

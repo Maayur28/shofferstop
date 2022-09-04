@@ -124,6 +124,7 @@ const Account = () => {
         </div>
       </div>
       <div className="account_content">
+        {selectedKey === "5" ? logoutCalled() : null}
         {isLogin ? (
           <>
             {!apifetch && Object.keys(accountData).length !== 0 ? (
@@ -143,7 +144,6 @@ const Account = () => {
                   />
                 ) : null}
                 {selectedKey === "4" ? <Orders accountCall={true} /> : null}
-                {selectedKey === "5" ? logoutCalled() : null}
               </>
             ) : (
               <Spin tip="Loading..." />
@@ -152,7 +152,7 @@ const Account = () => {
         ) : (
           <Result
             status="403"
-            title="Please login to continue!!!"
+            title="Please login to view account details!!!"
             subTitle="Sorry, you are not authorized to access this page."
             extra={<Link to="/">Back Home</Link>}
           />
