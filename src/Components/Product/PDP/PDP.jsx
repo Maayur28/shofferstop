@@ -76,7 +76,7 @@ const PDP = () => {
 
   const getRatingCalled = async (userId, productName) => {
     const response = await fetchGet(
-      "https://shofferstop-prodservice.herokuapp.com/product/ratings?" +
+      "https://shofferstopprodservice.azurewebsites.net/product/ratings?" +
         new URLSearchParams({
           userId: userId,
           productName: productName,
@@ -99,7 +99,7 @@ const PDP = () => {
     setapiCalled(true);
     try {
       const response = await fetchGet(
-        `https://shofferstop-prodservice.herokuapp.com/product/${productId}?` +
+        `https://shofferstopprodservice.azurewebsites.net/product/${productId}?` +
           new URLSearchParams({
             userId: userId,
           })
@@ -192,7 +192,7 @@ const PDP = () => {
       values.productName = productData.productName;
       values.rating = value;
       const response = await fetchPost(
-        "https://shofferstop-prodservice.herokuapp.com/product/ratings",
+        "https://shofferstopprodservice.azurewebsites.net/product/ratings",
         values
       );
       setRatingData({ ...response });
@@ -249,7 +249,7 @@ const PDP = () => {
     values.productBrand = productData.prodBrand;
     values.quantity = 1;
     const response = await fetchPost(
-      `https://shofferstop-prodservice.herokuapp.com/cart/${userId}`,
+      `https://shofferstopprodservice.azurewebsites.net/cart/${userId}`,
       values,
       ""
     );

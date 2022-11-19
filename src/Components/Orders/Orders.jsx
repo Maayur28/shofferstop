@@ -41,7 +41,7 @@ const Orders = ({ accountCall = false }) => {
   const getOrders = async (page = 0, pageSize = 0) => {
     setapiCalled(true);
     const response = await fetchGet(
-      `https://shofferstop-prodservice.herokuapp.com/order?` +
+      `https://shofferstopprodservice.azurewebsites.net/order?` +
         new URLSearchParams({
           userId: userId,
           page: page !== 0 ? page : pagination.page,

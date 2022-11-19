@@ -53,7 +53,7 @@ const Cart = () => {
     setapiCalled(true);
     try {
       const response = await fetchGet(
-        `https://shofferstop-prodservice.herokuapp.com/cart/${userId}`
+        `https://shofferstopprodservice.azurewebsites.net/cart/${userId}`
       );
       setCartData({ ...response });
       if (
@@ -88,7 +88,7 @@ const Cart = () => {
         values.productName = productName;
         values.productQuantity = value;
         const response = await fetchPut(
-          `https://shofferstop-prodservice.herokuapp.com/cart/${userId}`,
+          `https://shofferstopprodservice.azurewebsites.net/cart/${userId}`,
           values
         );
         setCartData({ ...response });
@@ -108,7 +108,7 @@ const Cart = () => {
       setCartUpdateCalled(true);
       try {
         const response = await fetchDelete(
-          `https://shofferstop-prodservice.herokuapp.com/cart/${userId}?` +
+          `https://shofferstopprodservice.azurewebsites.net/cart/${userId}?` +
             new URLSearchParams({
               productName: productName,
             })
@@ -135,7 +135,7 @@ const Cart = () => {
       values.address = defaultAddress;
       values.cart = cartData;
       const response = await fetchPost(
-        `https://shofferstop-prodservice.herokuapp.com/cart/order/${userId}`,
+        `https://shofferstopprodservice.azurewebsites.net/cart/order/${userId}`,
         values
       );
       if (response) {

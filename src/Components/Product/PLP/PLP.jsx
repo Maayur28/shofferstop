@@ -184,7 +184,7 @@ const PLP = () => {
     setProducts([]);
     try {
       const response = await fetchGet(
-        `https://shofferstop-prodservice.herokuapp.com/product/category/${categoryId}?` +
+        `https://shofferstopprodservice.azurewebsites.net/product/category/${categoryId}?` +
           new URLSearchParams({
             sortBy: sortBy.length > 0 ? sortBy : sortByvalue,
             filter: JSON.stringify(filter),
@@ -207,7 +207,7 @@ const PLP = () => {
     try {
       setapiCalled(true);
       const response = await fetchGet(
-        `https://shofferstop-prodservice.herokuapp.com/product/search/${searchId}?` +
+        `https://shofferstopprodservice.azurewebsites.net/product/search/${searchId}?` +
           new URLSearchParams({
             sortBy: sortBy.length > 0 ? sortBy : sortByvalue,
             filter: JSON.stringify(filter),

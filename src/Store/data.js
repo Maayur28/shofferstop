@@ -84,7 +84,7 @@ export const StoreProvider = (props) => {
 
   const getUserId = async () => {
     const response = await fetchGet(
-      `https://shofferstop-prodservice.herokuapp.com/cart/count/${userId}`,
+      `https://shofferstopprodservice.azurewebsites.net/cart/count/${userId}`,
       ""
     );
     setCartCount(response);

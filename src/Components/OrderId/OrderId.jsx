@@ -37,7 +37,7 @@ const OrderId = () => {
   const getOrders = async () => {
     setapiCalled(true);
     const response = await fetchGet(
-      `https://shofferstop-prodservice.herokuapp.com/order/${orderId}?` +
+      `https://shofferstopprodservice.azurewebsites.net/order/${orderId}?` +
         new URLSearchParams({
           userId: userId,
         })

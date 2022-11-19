@@ -49,7 +49,7 @@ const Wishlist = () => {
 
   const getWishlist = async (prod) => {
     const response = await fetchPost(
-      "https://shofferstop-prodservice.herokuapp.com/product/wishlist",
+      "https://shofferstopprodservice.azurewebsites.net/product/wishlist",
       prod
     );
     if (response && response.products) {

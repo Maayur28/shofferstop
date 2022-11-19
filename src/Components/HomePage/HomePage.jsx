@@ -42,7 +42,7 @@ const HomePage = () => {
 
   const getPromo = async () => {
     let response = await fetchGet(
-      `https://shofferstop-prodservice.herokuapp.com/product/promotions`,
+      `https://shofferstopprodservice.azurewebsites.net/product/promotions`,
       ""
     );
     response.at99 = constructProd(response.at99);

@@ -46,7 +46,7 @@ const SimilarProduct = ({ categoryId, productName }) => {
     setProducts([]);
     try {
       const response = await fetchGet(
-        `https://shofferstop-prodservice.herokuapp.com/product/category/${categoryId}?` +
+        `https://shofferstopprodservice.azurewebsites.net/product/category/${categoryId}?` +
           new URLSearchParams({
             sortBy: sortBy[Math.floor(Math.random() * 3 + 1) - 1],
             filter: "{}",
