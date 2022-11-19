@@ -77,7 +77,11 @@ const Orders = ({ accountCall = false }) => {
                             accountCall={accountCall}
                           />
                         }
-                        extra={<Link to={`${val.id}`}>View Order Details</Link>}
+                        extra={
+                          <Link to={`/order/${val.id}`}>
+                            View Order Details
+                          </Link>
+                        }
                       >
                         {val.items.length > 0 &&
                           val.items.map((value, index) => (
