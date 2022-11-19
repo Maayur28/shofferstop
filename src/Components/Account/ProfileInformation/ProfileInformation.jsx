@@ -46,7 +46,7 @@ const ProfileInformation = ({ accountData, setaccountData }) => {
     dob += YYYY;
     values.userDob = dob;
     const response = await fetchPut(
-      `https://shofferstop-userservice.herokuapp.com/users`,
+      `https://shofferstopuserservice.azurewebsites.net/users`,
       values,
       cookies.get("accessToken")
     );

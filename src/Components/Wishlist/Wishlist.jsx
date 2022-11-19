@@ -31,7 +31,7 @@ const Wishlist = () => {
   const getWishlistProdName = async () => {
     setapiCalled(true);
     const response = await fetchGet(
-      `https://shofferstop-userservice.herokuapp.com/users/wishlist`,
+      `https://shofferstopuserservice.azurewebsites.net/users/wishlist`,
       cookies.get("accessToken")
     );
     getWishlist(response);
@@ -40,7 +40,7 @@ const Wishlist = () => {
   const deleteWishlist = async (productName) => {
     setapiCalled(true);
     const response = await fetchDelete(
-      `https://shofferstop-userservice.herokuapp.com/users/wishlist/${productName}`,
+      `https://shofferstopuserservice.azurewebsites.net/users/wishlist/${productName}`,
       cookies.get("accessToken")
     );
     message.success("Wishlist Updated");

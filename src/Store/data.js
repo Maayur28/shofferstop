@@ -50,7 +50,7 @@ export const StoreProvider = (props) => {
           Authorization: `Bearer ${cookies.get("accessToken")}`,
         },
       };
-      fetch("https://shofferstop-userservice.herokuapp.com/users", options)
+      fetch("https://shofferstopuserservice.azurewebsites.net/users", options)
         .then((response) => response.json())
         .then((data) => {
           if (data != null) {

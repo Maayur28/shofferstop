@@ -83,7 +83,7 @@ const PLP = () => {
   const getWishlist = async () => {
     setapiCalled(true);
     const response = await fetchGet(
-      `https://shofferstop-userservice.herokuapp.com/users/wishlist`,
+      `https://shofferstopuserservice.azurewebsites.net/users/wishlist`,
       cookies.get("accessToken")
     );
     setWishlistData([...response.products]);
@@ -273,7 +273,7 @@ const PLP = () => {
       let values = {};
       values.productName = productName;
       const response = await fetchPost(
-        "https://shofferstop-userservice.herokuapp.com/users/wishlist",
+        "https://shofferstopuserservice.azurewebsites.net/users/wishlist",
         values,
         cookies.get("accessToken")
       );

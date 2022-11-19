@@ -21,7 +21,7 @@ const Login = ({ loginModalVisible, setloginModalVisible, setfirstName }) => {
       }
       setapiCalled(true);
       const response = await fetchPost(
-        `https://shofferstop-userservice.herokuapp.com/users/${
+        `https://shofferstopuserservice.azurewebsites.net/users/${
           createAccount ? "register" : "login"
         }`,
         values
