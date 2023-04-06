@@ -52,7 +52,7 @@ const Account = () => {
     setapifetch(true);
     try {
       const response = await fetchGet(
-        "https://shofferstopuserservice.azurewebsites.net/users/account",
+        "https://shofferstopuserservice.up.railway.app/users/account",
         cookies.get("accessToken")
       );
       setaccountData({ ...response });

@@ -50,7 +50,7 @@ export const StoreProvider = (props) => {
           Authorization: `Bearer ${cookies.get("accessToken")}`,
         },
       };
-      fetch("https://shofferstopuserservice.azurewebsites.net/users", options)
+      fetch("https://shofferstopuserservice.up.railway.app/users", options)
         .then((response) => response.json())
         .then((data) => {
           if (data != null) {
@@ -84,7 +84,7 @@ export const StoreProvider = (props) => {
 
   const getUserId = async () => {
     const response = await fetchGet(
-      `https://shofferstopprodservice.azurewebsites.net/cart/count/${userId}`,
+      `https://shofferstopprodservice.up.railway.app/cart/count/${userId}`,
       ""
     );
     setCartCount(response);

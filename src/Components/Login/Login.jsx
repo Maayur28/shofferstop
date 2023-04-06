@@ -21,7 +21,7 @@ const Login = ({ loginModalVisible, setloginModalVisible, setfirstName }) => {
       }
       setapiCalled(true);
       const response = await fetchPost(
-        `https://shofferstopuserservice.azurewebsites.net/users/${
+        `https://shofferstopuserservice.up.railway.app/users/${
           createAccount ? "register" : "login"
         }`,
         values

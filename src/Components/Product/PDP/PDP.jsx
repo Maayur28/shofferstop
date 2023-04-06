@@ -76,7 +76,7 @@ const PDP = () => {
 
   const getRatingCalled = async (userId, productName) => {
     const response = await fetchGet(
-      "https://shofferstopprodservice.azurewebsites.net/product/ratings?" +
+      "https://shofferstopprodservice.up.railway.app/product/ratings?" +
         new URLSearchParams({
           userId: userId,
           productName: productName,
@@ -89,7 +89,7 @@ const PDP = () => {
 
   const getWishlistCalled = async (productName) => {
     const response = await fetchGet(
-      `https://shofferstopuserservice.azurewebsites.net/users/wishlist/${productName}`,
+      `https://shofferstopuserservice.up.railway.app/users/wishlist/${productName}`,
       cookies.get("accessToken")
     );
     setwishlisted(response.wishlisted);
@@ -99,7 +99,7 @@ const PDP = () => {
     setapiCalled(true);
     try {
       const response = await fetchGet(
-        `https://shofferstopprodservice.azurewebsites.net/product/${productId}?` +
+        `https://shofferstopprodservice.up.railway.app/product/${productId}?` +
           new URLSearchParams({
             userId: userId,
           })
@@ -192,7 +192,7 @@ const PDP = () => {
       values.productName = productData.productName;
       values.rating = value;
       const response = await fetchPost(
-        "https://shofferstopprodservice.azurewebsites.net/product/ratings",
+        "https://shofferstopprodservice.up.railway.app/product/ratings",
         values
       );
       setRatingData({ ...response });
@@ -206,7 +206,7 @@ const PDP = () => {
       let values = {};
       values.productName = productName;
       const response = await fetchPost(
-        "https://shofferstopuserservice.azurewebsites.net/users/wishlist",
+        "https://shofferstopuserservice.up.railway.app/users/wishlist",
         values,
         cookies.get("accessToken")
       );
@@ -249,7 +249,7 @@ const PDP = () => {
     values.productBrand = productData.prodBrand;
     values.quantity = 1;
     const response = await fetchPost(
-      `https://shofferstopprodservice.azurewebsites.net/cart/${userId}`,
+      `https://shofferstopprodservice.up.railway.app/cart/${userId}`,
       values,
       ""
     );

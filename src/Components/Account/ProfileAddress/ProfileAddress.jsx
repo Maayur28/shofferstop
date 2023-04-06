@@ -63,7 +63,7 @@ const ProfileAddress = ({
   const getAddress = async (page, pageSize) => {
     setapiCalled(true);
     const response = await fetchGet(
-      "https://shofferstopuserservice.azurewebsites.net/users/address?" +
+      "https://shofferstopuserservice.up.railway.app/users/address?" +
         new URLSearchParams({
           page: page,
           pageSize: pageSize,
@@ -84,7 +84,7 @@ const ProfileAddress = ({
   const setAsDefault = async (addressId) => {
     setapiCalled(true);
     const response = await updatefetchPut(
-      `https://shofferstopuserservice.azurewebsites.net/users/address/default/${addressId}?` +
+      `https://shofferstopuserservice.up.railway.app/users/address/default/${addressId}?` +
         new URLSearchParams({
           page: pagination.page,
           pageSize: pagination.pageSize,
@@ -105,7 +105,7 @@ const ProfileAddress = ({
   const deleteAddress = async (addressId) => {
     setapiCalled(true);
     const response = await fetchDelete(
-      `https://shofferstopuserservice.azurewebsites.net/users/address/${addressId}?` +
+      `https://shofferstopuserservice.up.railway.app/users/address/${addressId}?` +
         new URLSearchParams({
           page: pagination.page,
           pageSize: pagination.pageSize,
@@ -130,7 +130,7 @@ const ProfileAddress = ({
     if (addressEditMode) {
       values.defaultAddress = values.defaultAddress === true ? 1 : 0;
       response = await fetchPut(
-        `https://shofferstopuserservice.azurewebsites.net/users/address/${addressId}?` +
+        `https://shofferstopuserservice.up.railway.app/users/address/${addressId}?` +
           new URLSearchParams({
             page: pagination.page,
             pageSize: pagination.pageSize,
@@ -141,7 +141,7 @@ const ProfileAddress = ({
       message.success("Address has been updated successfully", 2);
     } else {
       response = await fetchPost(
-        "https://shofferstopuserservice.azurewebsites.net/users/address?" +
+        "https://shofferstopuserservice.up.railway.app/users/address?" +
           new URLSearchParams({
             page: pagination.page,
             pageSize: pagination.pageSize,
@@ -201,7 +201,7 @@ const ProfileAddress = ({
   const searchCalled = async (val) => {
     setapiCalled(true);
     const response = await fetchGet(
-      "https://shofferstopuserservice.azurewebsites.net/users/address/search?" +
+      "https://shofferstopuserservice.up.railway.app/users/address/search?" +
         new URLSearchParams({
           search: val,
           page: pagination.page,

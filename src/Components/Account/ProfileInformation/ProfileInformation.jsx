@@ -46,7 +46,7 @@ const ProfileInformation = ({ accountData, setaccountData }) => {
     dob += YYYY;
     values.userDob = dob;
     const response = await fetchPut(
-      `https://shofferstopuserservice.azurewebsites.net/users`,
+      `https://shofferstopuserservice.up.railway.app/users`,
       values,
       cookies.get("accessToken")
     );
