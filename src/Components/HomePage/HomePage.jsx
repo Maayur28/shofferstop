@@ -42,7 +42,7 @@ const HomePage = () => {
 
   const getPromo = async () => {
     let response = await fetchGet(
-      `https://shofferstopprodservice.up.railway.app/product/promotions`,
+      `https://product.shofferstop.in/product/promotions`,
       ""
     );
     response.at99 = constructProd(response.at99);

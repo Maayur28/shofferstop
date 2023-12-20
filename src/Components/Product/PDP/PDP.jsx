@@ -76,7 +76,7 @@ const PDP = () => {
 
   const getRatingCalled = async (userId, productName) => {
     const response = await fetchGet(
-      "https://shofferstopprodservice.up.railway.app/product/ratings?" +
+      "https://product.shofferstop.in/product/ratings?" +
         new URLSearchParams({
           userId: userId,
           productName: productName,
@@ -89,7 +89,7 @@ const PDP = () => {
 
   const getWishlistCalled = async (productName) => {
     const response = await fetchGet(
-      `https://shofferstopuserservice.up.railway.app/users/wishlist/${productName}`,
+      `https://user.shofferstop.in/users/wishlist/${productName}`,
       cookies.get("accessToken")
     );
     setwishlisted(response.wishlisted);
@@ -99,7 +99,7 @@ const PDP = () => {
     setapiCalled(true);
     try {
       const response = await fetchGet(
-        `https://shofferstopprodservice.up.railway.app/product/${productId}?` +
+        `https://product.shofferstop.in/product/${productId}?` +
           new URLSearchParams({
             userId: userId,
           })
@@ -192,7 +192,7 @@ const PDP = () => {
       values.productName = productData.productName;
       values.rating = value;
       const response = await fetchPost(
-        "https://shofferstopprodservice.up.railway.app/product/ratings",
+        "https://product.shofferstop.in/product/ratings",
         values
       );
       setRatingData({ ...response });
@@ -206,7 +206,7 @@ const PDP = () => {
       let values = {};
       values.productName = productName;
       const response = await fetchPost(
-        "https://shofferstopuserservice.up.railway.app/users/wishlist",
+        "https://user.shofferstop.in/users/wishlist",
         values,
         cookies.get("accessToken")
       );
@@ -249,7 +249,7 @@ const PDP = () => {
     values.productBrand = productData.prodBrand;
     values.quantity = 1;
     const response = await fetchPost(
-      `https://shofferstopprodservice.up.railway.app/cart/${userId}`,
+      `https://product.shofferstop.in/cart/${userId}`,
       values,
       ""
     );

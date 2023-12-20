@@ -83,7 +83,7 @@ const PLP = () => {
   const getWishlist = async () => {
     setapiCalled(true);
     const response = await fetchGet(
-      `https://shofferstopuserservice.up.railway.app/users/wishlist`,
+      `https://user.shofferstop.in/users/wishlist`,
       cookies.get("accessToken")
     );
     setWishlistData([...response.products]);
@@ -184,7 +184,7 @@ const PLP = () => {
     setProducts([]);
     try {
       const response = await fetchGet(
-        `https://shofferstopprodservice.up.railway.app/product/category/${categoryId}?` +
+        `https://product.shofferstop.in/product/category/${categoryId}?` +
           new URLSearchParams({
             sortBy: sortBy.length > 0 ? sortBy : sortByvalue,
             filter: JSON.stringify(filter),
@@ -207,7 +207,7 @@ const PLP = () => {
     try {
       setapiCalled(true);
       const response = await fetchGet(
-        `https://shofferstopprodservice.up.railway.app/product/search/${searchId}?` +
+        `https://product.shofferstop.in/product/search/${searchId}?` +
           new URLSearchParams({
             sortBy: sortBy.length > 0 ? sortBy : sortByvalue,
             filter: JSON.stringify(filter),
@@ -273,7 +273,7 @@ const PLP = () => {
       let values = {};
       values.productName = productName;
       const response = await fetchPost(
-        "https://shofferstopuserservice.up.railway.app/users/wishlist",
+        "https://user.shofferstop.in/users/wishlist",
         values,
         cookies.get("accessToken")
       );

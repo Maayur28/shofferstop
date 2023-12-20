@@ -50,7 +50,7 @@ export const StoreProvider = (props) => {
           Authorization: `Bearer ${cookies.get("accessToken")}`,
         },
       };
-      fetch("https://shofferstopuserservice.up.railway.app/users", options)
+      fetch("https://user.shofferstop.in/users", options)
         .then((response) => response.json())
         .then((data) => {
           if (data != null) {
@@ -84,7 +84,7 @@ export const StoreProvider = (props) => {
 
   const getUserId = async () => {
     const response = await fetchGet(
-      `https://shofferstopprodservice.up.railway.app/cart/count/${userId}`,
+      `https://product.shofferstop.in/cart/count/${userId}`,
       ""
     );
     setCartCount(response);

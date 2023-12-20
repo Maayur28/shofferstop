@@ -41,7 +41,7 @@ const Orders = ({ accountCall = false }) => {
   const getOrders = async (page = 0, pageSize = 0) => {
     setapiCalled(true);
     const response = await fetchGet(
-      `https://shofferstopprodservice.up.railway.app/order?` +
+      `https://product.shofferstop.in/order?` +
         new URLSearchParams({
           userId: userId,
           page: page !== 0 ? page : pagination.page,

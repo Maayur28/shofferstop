@@ -53,7 +53,7 @@ const Cart = () => {
     setapiCalled(true);
     try {
       const response = await fetchGet(
-        `https://shofferstopprodservice.up.railway.app/cart/${userId}`
+        `https://product.shofferstop.in/cart/${userId}`
       );
       setCartData({ ...response });
       if (
@@ -88,7 +88,7 @@ const Cart = () => {
         values.productName = productName;
         values.productQuantity = value;
         const response = await fetchPut(
-          `https://shofferstopprodservice.up.railway.app/cart/${userId}`,
+          `https://product.shofferstop.in/cart/${userId}`,
           values
         );
         setCartData({ ...response });
@@ -108,7 +108,7 @@ const Cart = () => {
       setCartUpdateCalled(true);
       try {
         const response = await fetchDelete(
-          `https://shofferstopprodservice.up.railway.app/cart/${userId}?` +
+          `https://product.shofferstop.in/cart/${userId}?` +
             new URLSearchParams({
               productName: productName,
             })
@@ -135,7 +135,7 @@ const Cart = () => {
       values.address = defaultAddress;
       values.cart = cartData;
       const response = await fetchPost(
-        `https://shofferstopprodservice.up.railway.app/cart/order/${userId}`,
+        `https://product.shofferstop.in/cart/order/${userId}`,
         values
       );
       if (response) {

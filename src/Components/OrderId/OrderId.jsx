@@ -37,7 +37,7 @@ const OrderId = () => {
   const getOrders = async () => {
     setapiCalled(true);
     const response = await fetchGet(
-      `https://shofferstopprodservice.up.railway.app/order/${orderId}?` +
+      `https://product.shofferstop.in/order/${orderId}?` +
         new URLSearchParams({
           userId: userId,
         })

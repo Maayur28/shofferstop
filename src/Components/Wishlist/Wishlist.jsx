@@ -31,7 +31,7 @@ const Wishlist = () => {
   const getWishlistProdName = async () => {
     setapiCalled(true);
     const response = await fetchGet(
-      `https://shofferstopuserservice.up.railway.app/users/wishlist`,
+      `https://user.shofferstop.in/users/wishlist`,
       cookies.get("accessToken")
     );
     getWishlist(response);
@@ -40,7 +40,7 @@ const Wishlist = () => {
   const deleteWishlist = async (productName) => {
     setapiCalled(true);
     const response = await fetchDelete(
-      `https://shofferstopuserservice.up.railway.app/users/wishlist/${productName}`,
+      `https://user.shofferstop.in/users/wishlist/${productName}`,
       cookies.get("accessToken")
     );
     message.success("Wishlist Updated");
@@ -49,7 +49,7 @@ const Wishlist = () => {
 
   const getWishlist = async (prod) => {
     const response = await fetchPost(
-      "https://shofferstopprodservice.up.railway.app/product/wishlist",
+      "https://product.shofferstop.in/product/wishlist",
       prod
     );
     if (response && response.products) {

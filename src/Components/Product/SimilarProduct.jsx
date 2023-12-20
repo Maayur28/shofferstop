@@ -46,7 +46,7 @@ const SimilarProduct = ({ categoryId, productName }) => {
     setProducts([]);
     try {
       const response = await fetchGet(
-        `https://shofferstopprodservice.up.railway.app/product/category/${categoryId}?` +
+        `https://product.shofferstop.in/product/category/${categoryId}?` +
           new URLSearchParams({
             sortBy: sortBy[Math.floor(Math.random() * 3 + 1) - 1],
             filter: "{}",
