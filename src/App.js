@@ -13,10 +13,25 @@ import PDP from "./Components/Product/PDP/PDP";
 import Cart from "./Components/Cart/Cart";
 import Orders from "./Components/Orders/Orders";
 import OrderId from "./Components/OrderId/OrderId";
-
+import { Alert, Button } from "antd";
 function App() {
   return (
     <StoreProvider>
+      <Alert
+        message="Please note that this website has been created solely for educational and learning purposes. We do not engage in the sale or delivery of any products."
+        type="info"
+        action={
+          <Button
+            size="small"
+            type="primary"
+            onClick={() =>
+              window.open("https://www.trackmyprice.in/contact-us", "_blank")
+            }
+          >
+            Contact Us
+          </Button>
+        }
+      />
       <div className="App">
         <Navbar />
         <Divider style={{ margin: "0px 0px 5px 0px" }} />
